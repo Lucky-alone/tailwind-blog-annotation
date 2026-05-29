@@ -1,6 +1,6 @@
-import 'css/tailwind.css'// Tailwind CSS
-import 'pliny/search/algolia.css'
-import 'remark-github-blockquote-alert/alert.css'
+import 'css/tailwind.css'// Tailwind CSS 
+import 'pliny/search/algolia.css'// Search 
+import 'remark-github-blockquote-alert/alert.css'// GitHub Blockquote Alert
 
 import { Space_Grotesk } from 'next/font/google'
 import { Analytics, AnalyticsConfig } from 'pliny/analytics'
