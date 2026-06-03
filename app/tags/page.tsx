@@ -2,9 +2,10 @@ import Link from '@/components/Link' /* 引入自定义Link组件-谢根祥标�
 import Tag from '@/components/Tag' /* 引入标签展示组件-谢根祥标注 */
 import { slug } from 'github-slugger' /* 引入URL友好的slug生成函数-谢根祥标注 */
 import tagData from 'app/tag-data.json' /* 引入标签统计数据-谢根祥标注 */
+import type { Metadata } from 'next' /* 引入Next.js元数据类型-谢根祥标注 */
 import { genPageMetadata } from 'app/seo' /* 引入SEO元数据生成函数-谢根祥标注 */
 
-export const metadata = genPageMetadata({ title: 'Tags', description: 'Things I blog about' }) /* 生成标签页SEO元数据-谢根祥标注 */
+export const metadata: Metadata = genPageMetadata({ title: 'Tags', description: 'Things I blog about' }) /* 生成标签页SEO元数据-谢根祥标注 */
 
 /* 标签列表页面组件，展示所有标签及其文章数量-谢根祥标注 */
 export default async function Page() {

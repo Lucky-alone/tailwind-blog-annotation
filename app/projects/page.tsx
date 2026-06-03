@@ -1,8 +1,9 @@
 import projectsData from '@/data/projectsData' /* 引入项目数据-谢根祥标注 */
 import Card from '@/components/Card' /* 引入卡片展示组件-谢根祥标注 */
+import type { Metadata } from 'next' /* 引入Next.js元数据类型-谢根祥标注 */
 import { genPageMetadata } from 'app/seo' /* 引入SEO元数据生成函数-谢根祥标注 */
 
-export const metadata = genPageMetadata({ title: 'Projects' }) /* 生成项目页SEO元数据-谢根祥标注 */
+export const metadata: Metadata = genPageMetadata({ title: 'Projects' }) /* 生成项目页SEO元数据-谢根祥标注 */
 
 /* 项目展示页面组件，以卡片形式展示项目列表-谢根祥标注 */
 export default function Projects() {
