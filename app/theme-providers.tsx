@@ -5,8 +5,9 @@ import siteMetadata from '@/data/siteMetadata' /* 引入站点元数据配置-�
 
 /* 主题Provider包装组件，支持亮/暗/系统主题切换-谢根祥标注 */
 export function ThemeProviders({ children }: { children: React.ReactNode }) {
+  // attribute="class"通过CSS类名切换主题，enableSystem支持跟随系统主题-谢根祥标注
   return (
-    <ThemeProvider attribute="class" defaultTheme={siteMetadata.theme} enableSystem> {/* attribute="class"通过CSS类名切换主题，enableSystem支持跟随系统主题-谢根祥标注 */}
+    <ThemeProvider attribute="class" defaultTheme={siteMetadata.theme} enableSystem>
       {children}
     </ThemeProvider>
   )

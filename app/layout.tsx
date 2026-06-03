@@ -64,14 +64,16 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const basePath = process.env.BASE_PATH || '' /* 从环境变量获取部署基础路径，支持子目录部署-谢根祥标注 */
 
+  // 设置页面语言属性，注入字体CSS变量启用平滑滚动，抑制主题切换水合警告-谢根祥标注
   return (
     <html
-      lang={siteMetadata.language} /* 设置页面语言属性-谢根祥标注 */
-      className={`${space_grotesk.variable} scroll-smooth`} /* 注入字体CSS变量，启用平滑滚动-谢根祥标注 */
-      suppressHydrationWarning /* 抑制主题切换时的水合警告-谢根祥标注 */
+      lang={siteMetadata.language}
+      className={`${space_grotesk.variable} scroll-smooth`}
+      suppressHydrationWarning
     >
+      {/* iOS设备主屏幕图标-谢根祥标注 */}
       <link
-        rel="apple-touch-icon" /* iOS设备主屏幕图标-谢根祥标注 */
+        rel="apple-touch-icon"
         sizes="76x76"
         href={`${basePath}/static/favicons/apple-touch-icon.png`}
       />
@@ -87,25 +89,38 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         sizes="16x16"
         href={`${basePath}/static/favicons/favicon-16x16.png`}
       />
-      <link rel="manifest" href={`${basePath}/static/favicons/site.webmanifest`} /> {/* PWA清单文件-谢根祥标注 */}
+      {/* PWA清单文件-谢根祥标注 */}
+      <link rel="manifest" href={`${basePath}/static/favicons/site.webmanifest`} />
       <link
         rel="mask-icon"
         href={`${basePath}/static/favicons/safari-pinned-tab.svg`}
         color="#5bbad5"
       />
-      <meta name="msapplication-TileColor" content="#000000" /> {/* Windows磁贴颜色-谢根祥标注 */}
-      <meta name="theme-color" media="(prefers-color-scheme: light)" content="#fff" /> {/* 亮色模式主题色-谢根祥标注 */}
-      <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000" /> {/* 暗色模式主题色-谢根祥标注 */}
-      <link rel="alternate" type="application/rss+xml" href={`${basePath}/feed.xml`} /> {/* RSS订阅链接-谢根祥标注 */}
-      <body className="bg-white pl-[calc(100vw-100%)] text-black antialiased dark:bg-gray-950 dark:text-white"> {/* 页面主体，pl-[calc(100vw-100%)]修复滚动条偏移-谢根祥标注 */}
-        <ThemeProviders> {/* 包裹主题Provider，支持亮/暗主题切换-谢根祥标注 */}
-          <Analytics analyticsConfig={siteMetadata.analytics as AnalyticsConfig} /> {/* 网站流量分析组件-谢根祥标注 */}
-          <SectionContainer> {/* 页面内容居中容器-谢根祥标注 */}
-            <SearchProvider searchConfig={siteMetadata.search as SearchConfig}> {/* 搜索功能上下文Provider-谢根祥标注 */}
-              <Header /> {/* 页头导航栏-谢根祥标注 */}
-              <main className="mb-auto">{children}</main> {/* 主内容区域，mb-auto实现弹性底部对齐-谢根祥标注 */}
+      {/* Windows磁贴颜色-谢根祥标注 */}
+      <meta name="msapplication-TileColor" content="#000000" />
+      {/* 亮色模式主题色-谢根祥标注 */}
+      <meta name="theme-color" media="(prefers-color-scheme: light)" content="#fff" />
+      {/* 暗色模式主题色-谢根祥标注 */}
+      <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000" />
+      {/* RSS订阅链接-谢根祥标注 */}
+      <link rel="alternate" type="application/rss+xml" href={`${basePath}/feed.xml`} />
+      {/* 页面主体，pl-[calc(100vw-100%)]修复滚动条偏移-谢根祥标注 */}
+      <body className="bg-white pl-[calc(100vw-100%)] text-black antialiased dark:bg-gray-950 dark:text-white">
+        {/* 包裹主题Provider，支持亮/暗主题切换-谢根祥标注 */}
+        <ThemeProviders>
+          {/* 网站流量分析组件-谢根祥标注 */}
+          <Analytics analyticsConfig={siteMetadata.analytics as AnalyticsConfig} />
+          {/* 页面内容居中容器-谢根祥标注 */}
+          <SectionContainer>
+            {/* 搜索功能上下文Provider-谢根祥标注 */}
+            <SearchProvider searchConfig={siteMetadata.search as SearchConfig}>
+              {/* 页头导航栏-谢根祥标注 */}
+              <Header />
+              {/* 主内容区域，mb-auto实现弹性底部对齐-谢根祥标注 */}
+              <main className="mb-auto">{children}</main>
             </SearchProvider>
-            <Footer /> {/* 页脚信息-谢根祥标注 */}
+            {/* 页脚信息-谢根祥标注 */}
+            <Footer />
           </SectionContainer>
         </ThemeProviders>
       </body>
