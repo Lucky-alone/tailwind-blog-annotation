@@ -2,9 +2,10 @@ import { Authors, allAuthors } from 'contentlayer/generated' /* 引入作者数�
 import { MDXLayoutRenderer } from 'pliny/mdx-components' /* 引入MDX内容渲染器-谢根祥标注 */
 import AuthorLayout from '@/layouts/AuthorLayout' /* 引入作者页布局组件-谢根祥标注 */
 import { coreContent } from 'pliny/utils/contentlayer' /* 引入内容核心字段提取工具-谢根祥标注 */
+import type { Metadata } from 'next' /* 引入Next.js元数据类型-谢根祥标注 */
 import { genPageMetadata } from 'app/seo' /* 引入SEO元数据生成函数-谢根祥标注 */
 
-export const metadata = genPageMetadata({ title: 'About' }) /* 生成关于页的SEO元数据-谢根祥标注 */
+export const metadata: Metadata = genPageMetadata({ title: 'About' }) /* 生成关于页的SEO元数据-谢根祥标注 */
 
 /* 关于页面组件，展示作者信息和MDX内容-谢根祥标注 */
 export default function Page() {
