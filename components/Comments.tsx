@@ -41,7 +41,7 @@ export default function Comments({ slug }: { slug: string }) {
       ) : (
         <button
           onClick={() => setLoadComments(true)}
-          className="inline-flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-6 py-2.5 text-sm font-medium text-gray-700 shadow-sm transition-all hover:bg-gray-50 hover:shadow-md dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700"
+          className="inline-flex items-center gap-2 rounded-lg bg-primary-500 px-6 py-2.5 text-sm font-semibold text-white shadow-sm transition-all hover:bg-primary-600 hover:shadow-md dark:bg-primary-600 dark:hover:bg-primary-700"
         >
           <svg
             className="h-4 w-4"

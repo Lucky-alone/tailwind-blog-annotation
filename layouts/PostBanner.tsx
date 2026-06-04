@@ -18,6 +18,10 @@ import siteMetadata from '@/data/siteMetadata'
 import ScrollTopAndComment from '@/components/ScrollTopAndComment'
 import { useTranslation } from '@/components/locale-provider'
 
+const editUrl = (path) => `${siteMetadata.siteRepo}/blob/main/data/${path}`
+const discussUrl = (path) =>
+  `https://mobile.twitter.com/search?q=${encodeURIComponent(`${siteMetadata.siteUrl}/${path}`)}`
+
 interface LayoutProps {
   content: CoreContent<Blog>
   children: ReactNode
@@ -26,7 +30,7 @@ interface LayoutProps {
 }
 
 export default function PostMinimal({ content, next, prev, children }: LayoutProps) {
-  const { slug, title, images } = content
+  const { path, filePath, slug, title, images } = content
   const displayImage =
     images && images.length > 0 ? images[0] : 'https://picsum.photos/seed/picsum/800/400'
   const { t } = useTranslation()
@@ -49,6 +53,13 @@ export default function PostMinimal({ content, next, prev, children }: LayoutPro
             </div>
           </div>
           <div className="prose dark:prose-invert max-w-none py-4">{children}</div>
+          <div className="pt-6 pb-6 text-center text-sm text-gray-700 dark:text-gray-300">
+            <Link href={discussUrl(path)} rel="nofollow">
+              {t('post.discussOnTwitter')}
+            </Link>
+            {` \u2022 `}
+            <Link href={editUrl(filePath)}>{t('post.viewOnGitHub')}</Link>
+          </div>
           {siteMetadata.comments && (
             <div className="pt-6 pb-6 text-center text-gray-700 dark:text-gray-300" id="comment">
               <Comments slug={slug} />
