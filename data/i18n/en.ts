@@ -91,6 +91,10 @@ const en = {
     'card.linkTo': 'Link to',
     'card.learnMore': 'Learn more',
 
+    // Comments / 评论区
+    'comments.loadComments': 'Load Comments',
+    'comments.loading': 'Loading comments...',
+
     // KBar search / KBar 搜索
     'search.placeholder': 'Type a command or search...',
     'search.content': 'Content',

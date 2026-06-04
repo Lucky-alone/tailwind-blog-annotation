@@ -91,6 +91,10 @@ const zh = {
     'card.linkTo': '链接到',
     'card.learnMore': '了解更多',
 
+    // Comments / 评论区
+    'comments.loadComments': '加载评论',
+    'comments.loading': '评论加载中...',
+
     // KBar search / KBar 搜索
     'search.placeholder': '输入命令或搜索...',
     'search.content': '内容',

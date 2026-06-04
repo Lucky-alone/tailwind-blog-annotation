@@ -61,26 +61,20 @@ const siteMetadata = {
     // https://vercel.com/docs/environment-variables
     provider: 'giscus', // supported providers: giscus, utterances, disqus
     giscusConfig: {
-      // Visit the link below, and follow the steps in the 'configuration' section
-      // https://giscus.app/
+      // 配置来源: https://giscus.app/
+      // 仓库: Lucky-alone/tailwind-blog-annotation
       repo: process.env.NEXT_PUBLIC_GISCUS_REPO,
       repositoryId: process.env.NEXT_PUBLIC_GISCUS_REPOSITORY_ID,
       category: process.env.NEXT_PUBLIC_GISCUS_CATEGORY,
       categoryId: process.env.NEXT_PUBLIC_GISCUS_CATEGORY_ID,
-      mapping: 'pathname', // supported options: pathname, url, title
-      reactions: '1', // Emoji reactions: 1 = enable / 0 = disable
-      // Send discussion metadata periodically to the parent window: 1 = enable / 0 = disable
-      metadata: '0',
-      // theme example: light, dark, dark_dimmed, dark_high_contrast
-      // transparent_dark, preferred_color_scheme, custom
-      theme: 'light',
-      // theme when dark mode
-      darkTheme: 'transparent_dark',
-      // If the theme option above is set to 'custom`
-      // please provide a link below to your custom theme css file.
-      // example: https://giscus.app/themes/custom_example.css
+      mapping: 'pathname', // 页面 ↔ Discussion 映射：按 pathname 匹配
+      reactions: '1', // Emoji 表情反应：1 = 启用
+      metadata: '0', // 发送元数据到父窗口：0 = 禁用
+      inputPosition: 'bottom', // 评论输入框位置：底部
+      theme: 'light', // 亮色模式主题
+      darkTheme: 'transparent_dark', // 暗色模式主题
       themeURL: '',
-      // This corresponds to the `data-lang="en"` in giscus's configurations
+      // lang 会被 Comments.tsx 组件动态覆盖为 zh-CN 或 en，跟随 i18n 语言切换
       lang: 'en',
     },
   },
