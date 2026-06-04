@@ -93,6 +93,8 @@ const en = {
 
     // Comments / 评论区
     'comments.loadComments': 'Load Comments',
+    'comments.expandComments': 'Expand Comments',
+    'comments.collapseComments': 'Collapse Comments',
     'comments.loading': 'Loading comments...',
 
     // KBar search / KBar 搜索

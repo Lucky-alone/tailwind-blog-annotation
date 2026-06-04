@@ -62,21 +62,21 @@ const siteMetadata = {
     provider: 'giscus', // supported providers: giscus, utterances, disqus
     giscusConfig: {
       // 配置来源: https://giscus.app/
-      // 仓库: Lucky-alone/tailwind-blog-annotation
+      // 所有配置项对应 .env 文件中的 NEXT_PUBLIC_GISCUS_* 变量
       repo: process.env.NEXT_PUBLIC_GISCUS_REPO,
       repositoryId: process.env.NEXT_PUBLIC_GISCUS_REPOSITORY_ID,
       category: process.env.NEXT_PUBLIC_GISCUS_CATEGORY,
       categoryId: process.env.NEXT_PUBLIC_GISCUS_CATEGORY_ID,
-      mapping: 'pathname', // 页面 ↔ Discussion 映射：按 pathname 匹配
-      strict: '0', // 严格标题匹配：0 = 禁用（避免模糊搜索误匹配）
-      reactions: '1', // Emoji 表情反应：1 = 启用
-      metadata: '0', // 发送元数据到父窗口：0 = 禁用
-      inputPosition: 'bottom', // 评论输入框位置：底部
-      theme: 'light', // 亮色模式主题
-      darkTheme: 'transparent_dark', // 暗色模式主题
+      mapping: process.env.NEXT_PUBLIC_GISCUS_MAPPING || 'pathname',
+      strict: process.env.NEXT_PUBLIC_GISCUS_STRICT || '0',
+      reactions: process.env.NEXT_PUBLIC_GISCUS_REACTIONS || '1',
+      metadata: process.env.NEXT_PUBLIC_GISCUS_METADATA || '0',
+      inputPosition: process.env.NEXT_PUBLIC_GISCUS_INPUT_POSITION || 'bottom',
+      theme: process.env.NEXT_PUBLIC_GISCUS_THEME || 'preferred_color_scheme',
+      darkTheme: 'transparent_dark',
       themeURL: '',
       // lang 会被 Comments.tsx 组件动态覆盖为 zh-CN 或 en，跟随 i18n 语言切换
-      lang: 'en',
+      lang: process.env.NEXT_PUBLIC_GISCUS_LANG || 'zh-CN',
     },
   },
   search: {

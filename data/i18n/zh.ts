@@ -93,6 +93,8 @@ const zh = {
 
     // Comments / 评论区
     'comments.loadComments': '加载评论',
+    'comments.expandComments': '展开评论',
+    'comments.collapseComments': '收起评论',
     'comments.loading': '评论加载中...',
 
     // KBar search / KBar 搜索
