@@ -74,7 +74,7 @@ function KBarModalInner() {
                                 </svg>
                             </span>
                             <KBarSearch
-                                placeholder={t('search.placeholder')}
+                                defaultPlaceholder={t('search.placeholder')}
                                 className="h-8 w-full bg-transparent text-gray-600 placeholder-gray-400 focus:outline-none dark:text-gray-200 dark:placeholder-gray-500"
                             />
                             <kbd className="inline-block whitespace-nowrap rounded border px-1.5 align-middle font-medium leading-4 tracking-wide text-xs text-gray-400 border-gray-400">
@@ -155,8 +155,8 @@ function RenderResults() {
                         ) : (
                             <div
                                 className={`flex cursor-pointer justify-between px-4 py-2 ${active
-                                        ? 'bg-primary-600 text-gray-100'
-                                        : 'text-gray-700 dark:text-gray-100 bg-transparent'
+                                    ? 'bg-primary-600 text-gray-100'
+                                    : 'text-gray-700 dark:text-gray-100 bg-transparent'
                                     }`}
                             >
                                 <div className="flex space-x-2">
@@ -182,8 +182,8 @@ function RenderResults() {
                                             <kbd
                                                 key={sc}
                                                 className={`font-medium h-7 w-6 flex items-center justify-center text-xs rounded border ${active
-                                                        ? 'text-gray-200 border-gray-200'
-                                                        : 'text-gray-400 border-gray-400'
+                                                    ? 'text-gray-200 border-gray-200'
+                                                    : 'text-gray-400 border-gray-400'
                                                     }`}
                                             >
                                                 {sc}
