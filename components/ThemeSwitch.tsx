@@ -11,6 +11,7 @@ import {
   RadioGroup,
   Transition,
 } from '@headlessui/react'
+import { useTranslation } from './locale-provider'
 
 const Sun = () => (
   <svg
@@ -57,6 +58,7 @@ const Blank = () => <svg className="h-6 w-6" />
 const ThemeSwitch = () => {
   const [mounted, setMounted] = useState(false)
   const { theme, setTheme, resolvedTheme } = useTheme()
+  const { t } = useTranslation()
 
   // When mounted on client, now we can show the UI
   useEffect(() => setMounted(true), [])
@@ -90,7 +92,7 @@ const ThemeSwitch = () => {
                         <div className="mr-2">
                           <Sun />
                         </div>
-                        Light
+                        {t('theme.light')}
                       </button>
                     )}
                   </MenuItem>
@@ -99,14 +101,13 @@ const ThemeSwitch = () => {
                   <MenuItem>
                     {({ focus }) => (
                       <button
-                        className={`${
-                          focus ? 'bg-primary-600 text-white' : ''
-                        } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
+                        className={`${focus ? 'bg-primary-600 text-white' : ''
+                          } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
                       >
                         <div className="mr-2">
                           <Moon />
                         </div>
-                        Dark
+                        {t('theme.dark')}
                       </button>
                     )}
                   </MenuItem>
@@ -115,14 +116,13 @@ const ThemeSwitch = () => {
                   <MenuItem>
                     {({ focus }) => (
                       <button
-                        className={`${
-                          focus ? 'bg-primary-600 text-white' : ''
-                        } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
+                        className={`${focus ? 'bg-primary-600 text-white' : ''
+                          } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
                       >
                         <div className="mr-2">
                           <Monitor />
                         </div>
-                        System
+                        {t('theme.system')}
                       </button>
                     )}
                   </MenuItem>

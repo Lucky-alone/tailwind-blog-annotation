@@ -1,8 +1,18 @@
+'use client'
+
+/**
+ * 页脚组件
+ * 展示社交图标、版权信息和主题链接
+ * 使用 i18n 翻译支持中英文切换
+ */
 import Link from './Link'
 import siteMetadata from '@/data/siteMetadata'
 import SocialIcon from '@/components/social-icons'
+import { useTranslation } from './locale-provider'
 
 export default function Footer() {
+  const { t } = useTranslation()
+
   return (
     <footer>
       <div className="mt-16 flex flex-col items-center">
@@ -28,7 +38,7 @@ export default function Footer() {
         </div>
         <div className="mb-8 text-sm text-gray-500 dark:text-gray-400">
           <Link href="https://github.com/timlrx/tailwind-nextjs-starter-blog">
-            Tailwind Nextjs Theme
+            {t('footer.theme')}
           </Link>
         </div>
       </div>

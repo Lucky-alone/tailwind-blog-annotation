@@ -10,6 +10,7 @@ import SectionContainer from '@/components/SectionContainer' /* 引入内容区�
 import Footer from '@/components/Footer' /* 引入页脚组件-谢根祥标注 */
 import siteMetadata from '@/data/siteMetadata' /* 引入站点元数据配置-谢根祥标注 */
 import { ThemeProviders } from './theme-providers' /* 引入主题Provider组件-谢根祥标注 */
+import { LocaleProvider } from '@/components/locale-provider' /* 引入国际化语言Provider-支持中英文切换 */
 import { Metadata } from 'next' /* 引入Next.js Metadata类型-谢根祥标注 */
 
 /* 配置Space Grotesk字体，支持拉丁子集，使用CSS变量存储字体族-谢根祥标注 */
@@ -106,23 +107,26 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <link rel="alternate" type="application/rss+xml" href={`${basePath}/feed.xml`} />
       {/* 页面主体，pl-[calc(100vw-100%)]修复滚动条偏移-谢根祥标注 */}
       <body className="bg-white pl-[calc(100vw-100%)] text-black antialiased dark:bg-gray-950 dark:text-white">
-        {/* 包裹主题Provider，支持亮/暗主题切换-谢根祥标注 */}
-        <ThemeProviders>
-          {/* 网站流量分析组件-谢根祥标注 */}
-          <Analytics analyticsConfig={siteMetadata.analytics as AnalyticsConfig} />
-          {/* 页面内容居中容器-谢根祥标注 */}
-          <SectionContainer>
-            {/* 搜索功能上下文Provider-谢根祥标注 */}
-            <SearchProvider searchConfig={siteMetadata.search as SearchConfig}>
-              {/* 页头导航栏-谢根祥标注 */}
-              <Header />
-              {/* 主内容区域，mb-auto实现弹性底部对齐-谢根祥标注 */}
-              <main className="mb-auto">{children}</main>
-            </SearchProvider>
-            {/* 页脚信息-谢根祥标注 */}
-            <Footer />
-          </SectionContainer>
-        </ThemeProviders>
+        {/* 包裹语言Provider，支持中英文i18n切换 */}
+        <LocaleProvider>
+          {/* 包裹主题Provider，支持亮/暗主题切换-谢根祥标注 */}
+          <ThemeProviders>
+            {/* 网站流量分析组件-谢根祥标注 */}
+            <Analytics analyticsConfig={siteMetadata.analytics as AnalyticsConfig} />
+            {/* 页面内容居中容器-谢根祥标注 */}
+            <SectionContainer>
+              {/* 搜索功能上下文Provider-谢根祥标注 */}
+              <SearchProvider searchConfig={siteMetadata.search as SearchConfig}>
+                {/* 页头导航栏-谢根祥标注 */}
+                <Header />
+                {/* 主内容区域，mb-auto实现弹性底部对齐-谢根祥标注 */}
+                <main className="mb-auto">{children}</main>
+              </SearchProvider>
+              {/* 页脚信息-谢根祥标注 */}
+              <Footer />
+            </SectionContainer>
+          </ThemeProviders>
+        </LocaleProvider>
       </body>
     </html>
   )

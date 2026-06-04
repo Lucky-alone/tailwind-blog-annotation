@@ -1,5 +1,9 @@
 'use client'
 
+/**
+ * 文章列表布局组件
+ * 支持搜索过滤和分页，使用 i18n 翻译支持中英文切换
+ */
 import { useState } from 'react'
 import { usePathname } from 'next/navigation'
 import { formatDate } from 'pliny/utils/formatDate'
@@ -8,6 +12,7 @@ import type { Blog } from 'contentlayer/generated'
 import Link from '@/components/Link'
 import Tag from '@/components/Tag'
 import siteMetadata from '@/data/siteMetadata'
+import { useTranslation } from '@/components/locale-provider'
 
 interface PaginationProps {
   totalPages: number
@@ -20,7 +25,9 @@ interface ListLayoutProps {
   pagination?: PaginationProps
 }
 
+/** 分页导航组件，支持上一页/下一页切换 */
 function Pagination({ totalPages, currentPage }: PaginationProps) {
+  const { t } = useTranslation()
   const pathname = usePathname()
   const segments = pathname.split('/')
   const lastSegment = segments[segments.length - 1]
@@ -36,7 +43,7 @@ function Pagination({ totalPages, currentPage }: PaginationProps) {
       <nav className="flex justify-between">
         {!prevPage && (
           <button className="cursor-auto disabled:opacity-50" disabled={!prevPage}>
-            Previous
+            {t('blog.previous')}
           </button>
         )}
         {prevPage && (
@@ -44,20 +51,20 @@ function Pagination({ totalPages, currentPage }: PaginationProps) {
             href={currentPage - 1 === 1 ? `/${basePath}/` : `/${basePath}/page/${currentPage - 1}`}
             rel="prev"
           >
-            Previous
+            {t('blog.previous')}
           </Link>
         )}
         <span>
-          {currentPage} of {totalPages}
+          {currentPage} {t('blog.of')} {totalPages}
         </span>
         {!nextPage && (
           <button className="cursor-auto disabled:opacity-50" disabled={!nextPage}>
-            Next
+            {t('blog.next')}
           </button>
         )}
         {nextPage && (
           <Link href={`/${basePath}/page/${currentPage + 1}`} rel="next">
-            Next
+            {t('blog.next')}
           </Link>
         )}
       </nav>
@@ -71,6 +78,7 @@ export default function ListLayout({
   initialDisplayPosts = [],
   pagination,
 }: ListLayoutProps) {
+  const { t } = useTranslation()
   const [searchValue, setSearchValue] = useState('')
   const filteredBlogPosts = posts.filter((post) => {
     const searchContent = post.title + post.summary + post.tags?.join(' ')
@@ -90,12 +98,12 @@ export default function ListLayout({
           </h1>
           <div className="relative max-w-lg">
             <label>
-              <span className="sr-only">Search articles</span>
+              <span className="sr-only">{t('blog.searchArticles')}</span>
               <input
-                aria-label="Search articles"
+                aria-label={t('blog.searchArticles')}
                 type="text"
                 onChange={(e) => setSearchValue(e.target.value)}
-                placeholder="Search articles"
+                placeholder={t('blog.searchArticles')}
                 className="focus:border-primary-500 focus:ring-primary-500 block w-full rounded-md border border-gray-300 bg-white px-4 py-2 text-gray-900 dark:border-gray-900 dark:bg-gray-800 dark:text-gray-100"
               />
             </label>
@@ -116,14 +124,14 @@ export default function ListLayout({
           </div>
         </div>
         <ul>
-          {!filteredBlogPosts.length && 'No posts found.'}
+          {!filteredBlogPosts.length && t('blog.noPosts')}
           {displayPosts.map((post) => {
             const { path, date, title, summary, tags } = post
             return (
               <li key={path} className="py-4">
                 <article className="space-y-2 xl:grid xl:grid-cols-4 xl:items-baseline xl:space-y-0">
                   <dl>
-                    <dt className="sr-only">Published on</dt>
+                    <dt className="sr-only">{t('blog.publishedOn')}</dt>
                     <dd className="text-base leading-6 font-medium text-gray-500 dark:text-gray-400">
                       <time dateTime={date}>{formatDate(date, siteMetadata.locale)}</time>
                     </dd>

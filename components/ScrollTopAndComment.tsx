@@ -1,10 +1,16 @@
 'use client'
 
+/**
+ * 滚动到顶部和评论的悬浮按钮组件
+ * 使用 i18n 翻译支持中英文 aria-label
+ */
 import siteMetadata from '@/data/siteMetadata'
 import { useEffect, useState } from 'react'
+import { useTranslation } from './locale-provider'
 
 const ScrollTopAndComment = () => {
   const [show, setShow] = useState(false)
+  const { t } = useTranslation()
 
   useEffect(() => {
     const handleWindowScroll = () => {
@@ -28,7 +34,7 @@ const ScrollTopAndComment = () => {
     >
       {siteMetadata.comments?.provider && (
         <button
-          aria-label="Scroll To Comment"
+          aria-label={t('scroll.toComment')}
           onClick={handleScrollToComment}
           className="rounded-full bg-gray-200 p-2 text-gray-500 transition-all hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-400 dark:hover:bg-gray-600"
         >
@@ -42,7 +48,7 @@ const ScrollTopAndComment = () => {
         </button>
       )}
       <button
-        aria-label="Scroll To Top"
+        aria-label={t('scroll.toTop')}
         onClick={handleScrollTop}
         className="rounded-full bg-gray-200 p-2 text-gray-500 transition-all hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-400 dark:hover:bg-gray-600"
       >
