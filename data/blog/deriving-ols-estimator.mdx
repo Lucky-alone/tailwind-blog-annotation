@@ -1,143 +1,177 @@
 ---
-title: Deriving the OLS Estimator
-date: '2020-12-21'
-tags: ['next js', 'math', 'ols']
+title: '机器学习基础：线性回归的数学推导'
+date: '2024-01-10'
+tags: ['机器学习', '数学', '编程', '数据科学']
 draft: false
-summary: 'How to derive the OLS Estimator with matrix notation and a tour of math typesetting using markdown with the help of KaTeX.'
+summary: '从零开始推导线性回归的最小二乘法（OLS）估计量，理解机器学习中最基础也最重要的算法原理，并使用Python实现。'
 ---
 
-# Introduction
+# 机器学习基础：线性回归的数学推导
 
-Parsing and display of math equations is included in this blog template. Parsing of math is enabled by `remark-math` and `rehype-katex`.
-KaTeX and its associated font is included in `_document.js` so feel free to use it on any page.
-[^footnote]
+线性回归是机器学习中最基础、最重要的算法之一。本文将带你从数学角度深入理解线性回归的原理，并使用矩阵表示法推导最小二乘法（OLS）估计量。
 
-[^footnote]: For the full list of supported TeX functions, check out the [KaTeX documentation](https://katex.org/docs/supported.html)
+## 引言
 
-Inline math symbols can be included by enclosing the term between the `$` symbol.
+线性回归的目标是找到自变量（特征）和因变量（目标）之间的线性关系。假设我们有 $n$ 个观测样本和 $k$ 个特征变量。
 
-Math code blocks are denoted by `$$`.
-
-If you intend to use the `$` sign instead of math, you can escape it (`\$`), or specify the HTML entity (`&dollar;`) [^2]
-
-Inline or manually enumerated footnotes are also supported. Click on the links above to see them in action.
-
-[^2]: \$10 and &dollar;20.
-
-# Deriving the OLS Estimator
-
-Using matrix notation, let $n$ denote the number of observations and $k$ denote the number of regressors.
-
-The vector of outcome variables $\mathbf{Y}$ is a $n \times 1$ matrix,
-
-```tex
-\mathbf{Y} = \left[\begin{array}
-  {c}
-  y_1 \\
-  . \\
-  . \\
-  . \\
-  y_n
-\end{array}\right]
-```
+因变量向量 $\mathbf{Y}$ 是一个 $n \times 1$ 的列向量：
 
 $$
 \mathbf{Y} = \left[\begin{array}
   {c}
   y_1 \\
-  . \\
-  . \\
-  . \\
+  y_2 \\
+  \vdots \\
   y_n
 \end{array}\right]
 $$
 
-The matrix of regressors $\mathbf{X}$ is a $n \times k$ matrix (or each row is a $k \times 1$ vector),
-
-```latex
-\mathbf{X} = \left[\begin{array}
-  {ccccc}
-  x_{11} & . & . & . & x_{1k} \\
-  . & . & . & . & .  \\
-  . & . & . & . & .  \\
-  . & . & . & . & .  \\
-  x_{n1} & . & . & . & x_{nn}
-\end{array}\right] =
-\left[\begin{array}
-  {c}
-  \mathbf{x}'_1 \\
-  . \\
-  . \\
-  . \\
-  \mathbf{x}'_n
-\end{array}\right]
-```
+特征矩阵 $\mathbf{X}$ 是一个 $n \times k$ 的矩阵：
 
 $$
 \mathbf{X} = \left[\begin{array}
   {ccccc}
-  x_{11} & . & . & . & x_{1k} \\
-  . & . & . & . & .  \\
-  . & . & . & . & .  \\
-  . & . & . & . & .  \\
-  x_{n1} & . & . & . & x_{nn}
+  x_{11} & x_{12} & \cdots & x_{1k} \\
+  x_{21} & x_{22} & \cdots & x_{2k} \\
+  \vdots & \vdots & \ddots & \vdots \\
+  x_{n1} & x_{n2} & \cdots & x_{nk}
 \end{array}\right] =
 \left[\begin{array}
   {c}
   \mathbf{x}'_1 \\
-  . \\
-  . \\
-  . \\
+  \mathbf{x}'_2 \\
+  \vdots \\
   \mathbf{x}'_n
 \end{array}\right]
 $$
 
-The vector of error terms $\mathbf{U}$ is also a $n \times 1$ matrix.
+## 最小二乘法推导
 
-At times it might be easier to use vector notation. For consistency, I will use the bold small x to denote a vector and capital letters to denote a matrix. Single observations are denoted by the subscript.
+### 模型假设
 
-## Least Squares
-
-**Start**:  
+**起点**：  
 $$y_i = \mathbf{x}'_i \beta + u_i$$
 
-**Assumptions**:
+**基本假设**：
 
-1. Linearity (given above)
-2. $E(\mathbf{U}|\mathbf{X}) = 0$ (conditional independence)
-3. rank($\mathbf{X}$) = $k$ (no multi-collinearity i.e. full rank)
-4. $Var(\mathbf{U}|\mathbf{X}) = \sigma^2 I_n$ (Homoskedascity)
+1. 线性关系（如上式所示）
+2. $E(\mathbf{U}|\mathbf{X}) = 0$（条件均值为零）
+3. rank($\mathbf{X}$) = $k$（无多重共线性，满秩）
+4. $Var(\mathbf{U}|\mathbf{X}) = \sigma^2 I_n$（同方差性）
 
-**Aim**:  
-Find $\beta$ that minimises the sum of squared errors:
+### 目标函数
+
+我们要找到使残差平方和最小的 $\beta$：
 
 $$
 Q = \sum_{i=1}^{n}{u_i^2} = \sum_{i=1}^{n}{(y_i - \mathbf{x}'_i\beta)^2} = (Y-X\beta)'(Y-X\beta)
 $$
 
-**Solution**:  
-Hints: $Q$ is a $1 \times 1$ scalar, by symmetry $\frac{\partial b'Ab}{\partial b} = 2Ab$.
+### 求解过程
 
-Take matrix derivative w.r.t $\beta$:
+对 $\beta$ 求导，利用矩阵微积分的性质：
 
-```tex
+$$
 \begin{aligned}
   \min Q           & = \min_{\beta} \mathbf{Y}'\mathbf{Y} - 2\beta'\mathbf{X}'\mathbf{Y} +
   \beta'\mathbf{X}'\mathbf{X}\beta \\
                    & = \min_{\beta} - 2\beta'\mathbf{X}'\mathbf{Y} + \beta'\mathbf{X}'\mathbf{X}\beta \\
-  \text{[FOC]}~~~0 & =  - 2\mathbf{X}'\mathbf{Y} + 2\mathbf{X}'\mathbf{X}\hat{\beta}                  \\
+  \text{[一阶条件]}~~~0 & =  - 2\mathbf{X}'\mathbf{Y} + 2\mathbf{X}'\mathbf{X}\hat{\beta}                  \\
   \hat{\beta}      & = (\mathbf{X}'\mathbf{X})^{-1}\mathbf{X}'\mathbf{Y}                              \\
                    & = (\sum^{n} \mathbf{x}_i \mathbf{x}'_i)^{-1} \sum^{n} \mathbf{x}_i y_i
 \end{aligned}
+$$
+
+这就是著名的**OLS估计量**公式！
+
+## Python代码实现
+
+下面我们用Python来实现线性回归：
+
+```python
+import numpy as np
+
+class LinearRegression:
+    """使用最小二乘法实现的线性回归模型"""
+
+    def __init__(self):
+        self.weights = None
+        self.bias = None
+
+    def fit(self, X, y):
+        """训练模型，计算最优权重"""
+        # 添加偏置项（截距）
+        n_samples, n_features = X.shape
+        X_with_bias = np.c_[np.ones(n_samples), X]
+
+        # OLS公式: β = (X'X)^(-1) X'y
+        X_T = X_with_bias.T
+        X_T_X_inv = np.linalg.inv(X_T @ X_with_bias)
+        self.weights = X_T_X_inv @ X_T @ y
+
+    def predict(self, X):
+        """预测"""
+        n_samples = X.shape[0]
+        X_with_bias = np.c_[np.ones(n_samples), X]
+        return X_with_bias @ self.weights
+
+    def score(self, X, y):
+        """计算R²决定系数"""
+        y_pred = self.predict(X)
+        ss_res = np.sum((y - y_pred) ** 2)
+        ss_tot = np.sum((y - np.mean(y)) ** 2)
+        return 1 - (ss_res / ss_tot)
 ```
 
-$$
-\begin{aligned}
-  \min Q           & = \min_{\beta} \mathbf{Y}'\mathbf{Y} - 2\beta'\mathbf{X}'\mathbf{Y} +
-  \beta'\mathbf{X}'\mathbf{X}\beta \\
-                   & = \min_{\beta} - 2\beta'\mathbf{X}'\mathbf{Y} + \beta'\mathbf{X}'\mathbf{X}\beta \\
-  \text{[FOC]}~~~0 & =  - 2\mathbf{X}'\mathbf{Y} + 2\mathbf{X}'\mathbf{X}\hat{\beta}                  \\
-  \hat{\beta}      & = (\mathbf{X}'\mathbf{X})^{-1}\mathbf{X}'\mathbf{Y}                              \\
-                   & = (\sum^{n} \mathbf{x}_i \mathbf{x}'_i)^{-1} \sum^{n} \mathbf{x}_i y_i
-\end{aligned}
-$$
+### 使用示例
+
+```python
+# 生成模拟数据
+np.random.seed(42)
+X = np.random.rand(100, 2) * 10
+true_weights = np.array([3.5, -2.1])
+y = X @ true_weights + 5 + np.random.randn(100) * 2  # 真实值 + 噪声
+
+# 训练模型
+model = LinearRegression()
+model.fit(X, y)
+
+# 预测和评估
+print(f"R² 分数: {model.score(X, y):.4f}")
+print(f"权重: {model.weights}")
+```
+
+## 梯度下降法
+
+除了直接求解，我们还可以使用梯度下降法来迭代优化：
+
+```python
+class GradientDescentRegression:
+    """使用梯度下降法实现的线性回归"""
+
+    def __init__(self, learning_rate=0.01, n_iterations=1000):
+        self.lr = learning_rate
+        self.n_iterations = n_iterations
+
+    def fit(self, X, y):
+        n_samples, n_features = X.shape
+        self.weights = np.zeros(n_features)
+        self.bias = 0
+
+        for _ in range(self.n_iterations):
+            y_pred = X @ self.weights + self.bias
+            # 计算梯度
+            dw = (1 / n_samples) * X.T @ (y_pred - y)
+            db = (1 / n_samples) * np.sum(y_pred - y)
+            # 更新参数
+            self.weights -= self.lr * dw
+            self.bias -= self.lr * db
+```
+
+## 总结
+
+线性回归虽然简单，但它是理解整个机器学习领域的基石。通过本文的数学推导，我们可以清楚地看到：
+
+- OLS估计量有解析解：$\hat{\beta} = (\mathbf{X}'\mathbf{X})^{-1}\mathbf{X}'\mathbf{Y}$
+- 当数据量很大时，可以使用梯度下降法等迭代方法
+- 理解这些基础概念对学习更复杂的模型（如神经网络）至关重要

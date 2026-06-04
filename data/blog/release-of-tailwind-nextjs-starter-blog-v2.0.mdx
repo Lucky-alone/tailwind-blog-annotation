@@ -1,192 +1,206 @@
 ---
-title: 'Release of Tailwind Nextjs Starter Blog v2.0'
-date: '2023-08-05'
-lastmod: '2023-08-05'
-tags: ['next-js', 'tailwind', 'guide', 'feature']
+title: '大数据技术概览：Hadoop、Spark与Flink'
+date: '2024-07-20'
+lastmod: '2024-08-01'
+tags: ['大数据', 'Hadoop', 'Spark', 'Flink', '数据处理']
 draft: false
-summary: 'Release of Tailwind Nextjs Starter Blog template v2.0, refactored with Nextjs App directory and React Server Components setup.Discover the new features and how to migrate from V1.'
+summary: '全面介绍大数据生态系统的核心技术，对比Hadoop、Spark和Flink的特点与适用场景，帮助你建立大数据技术全景认知。'
 images: ['/static/images/twitter-card.png']
 ---
 
-## Introduction
+# 大数据技术概览：Hadoop、Spark与Flink
 
-Welcome to the release of Tailwind Nextjs Starter Blog template v2.0. This release is a major refactor of the codebase to support Nextjs App directory and React Server Components. Read on to discover the new features and how to migrate from V1.
+大数据时代，如何高效处理海量数据是每个技术团队面临的挑战。本文将系统介绍大数据生态系统的核心技术栈，帮助你建立全面的大数据技术认知。
 
-<TOCInline toc={props.toc} exclude="Introduction" />
+<TOCInline toc={props.toc} exclude="大数据技术概览：Hadoop、Spark与Flink" />
 
-## V1 to V2
+## 什么是大数据
 
-![Github Traffic](/static/images/github-traffic.png)
+大数据通常用**5V**特征来描述：
 
-The template was first released in January 2021 and has since been used by thousands of users. It is featured on [Next.js Templates](https://vercel.com/templates/next.js/tailwind-css-starter-blog), [Tailwind Awesome](https://www.tailwindawesome.com/resources/tailwind-nextjs-starter-blog) among other listing sites. It attracts 200+ unique visitors daily notching 1500-2000 page views, with 1.3k forks and many other clones.
+| 特征 | 说明 |
+|------|------|
+| Volume（体量大） | 数据量从GB到PB甚至EB级别 |
+| Velocity（速度快） | 数据产生和处理速度极快 |
+| Variety（种类多） | 结构化、半结构化、非结构化数据 |
+| Value（价值高） | 数据蕴含巨大商业价值 |
+| Veracity（真实性） | 数据质量和准确性至关重要 |
 
-Many thanks to the community of users and contributors for making this template a success! I created a small video montage of the blogs (while cleaning up the list in the readme) to showcase the diversity of the blogs created using the template and to celebrate the milestone:
+## Hadoop：大数据的基石
 
-<video controls>
-  <source
-    src="https://github-production-user-asset-6210df.s3.amazonaws.com/28362229/258559849-2124c81f-b99d-4431-839c-347e01a2616c.webm"
-    type="video/webm"
-  />
-</video>
+### 核心组件
 
-Version 2 builds on the success of the previous version and introduces many new features and improvements. The codebase has been refactored to support Next.js App directory and React Server Components. Markdown / MDX is now processed using Contentlayer, a type-safe content SDK that validates and transforms your content into type-safe JSON data. It integrates with Pliny, a new library that provides out of the box Next.js components to enhance your static site with analytics, comments and newsletter subscription. A new command palette (⌘-k) search component is also added to the template.
+Hadoop是大数据生态系统的开山鼻祖，由以下核心组件构成：
 
-Let's dive into the new features and improvements in V2.
+**HDFS（分布式文件系统）**
 
-## Next.js App Directory and React Server Components
-
-Now that [Next.js App router](https://nextjs.org/docs/app) is finally stable and is mostly feature compatible with Page Router, the codebase has been migrated to new setup. This allows for a hybrid rendering approach, with the use of React Server Components generated on the server side for faster page loads and smaller bundle sizes, while retaining the ability to sprinkle in client side React components for interactivity.[^1]
-
-With addition powers comes a [new paradigm](https://nextjs.org/docs/getting-started/react-essentials) to learn. I have migrated the codebase to make use of the new features as much as possible. This includes changes in the folder structure, splitting components into server vs client components, leveraging server side data fetching and using the recommended [Metadata](https://nextjs.org/docs/app/building-your-application/optimizing/metadata) API for SEO discoverability.
-
-While this simplifies the codebase to some extent, it makes migration from the old codebase more difficult. If you are looking to migrate, I recommend starting from a fresh template and copying over your customizations and existing content. See the [migration recommendations](#migration-recommendations) section for more details.
-
-## Typescript First
-
-The codebase has been migrated to Typescript. While the previous version of the template was available in both Javascript and Typescript, I decided to reduce the maintenance burden and focus on Typescript. This also allows for better type checking and code completion in IDEs.
-
-Typescript is also a perfect match with our new type-safe markdown processor - Contentlayer.
-
-## Contentlayer
-
-[Contentlayer](https://www.contentlayer.dev/) is a content SDK that validates and transforms your content into type-safe JSON data that you can easily import into your application. It makes working with local markdown or MDX files a breeze. This replaces `MDX-bundler` and our own markdown processing workflow.
-
-First, a content source is defined, specifying the name of the document type, the source where it is located along with the frontmatter fields and any additional computed fields that should be generated as part of the process.
-
-```ts:contentlayer.config.ts
-export const Blog = defineDocumentType(() => ({
-  name: 'Blog',
-  filePathPattern: 'blog/**/*.mdx',
-  contentType: 'mdx',
-  fields: {
-    title: { type: 'string', required: true },
-    date: { type: 'date', required: true },
-    tags: { type: 'list', of: { type: 'string' }, default: [] },
-    ...
-  },
-  computedFields: {
-    readingTime: { type: 'json', resolve: (doc) => readingTime(doc.body.raw) },
-    slug: {
-      type: 'string',
-      resolve: (doc) => doc._raw.flattenedPath.replace(/^.+?(\/)/, ''),
-    }
-    ...
-  },
-}))
+```
+NameNode（主节点）    → 管理文件系统的命名空间和元数据
+DataNode（数据节点）  → 存储实际数据块
+Secondary NameNode   → 定期合并fsimage和editlog
 ```
 
-Contentlayer then processes the MDX files with our desired markdown remark or rehype plugins, validates the schema, generate type definitions and output json files that can be easily imported in our pages. Hot reloading comes out of the box, so edits to the markdown files will be reflected in the browser immediately!
+**MapReduce（分布式计算框架）**
 
-## Pliny
+```python
+# MapReduce伪代码示例：词频统计
 
-A large reason for the popularity of the template was its customizability and integration with other services from analytics providers to commenting solutions. However, this means that a lot of boilerplate code has to be co-located within the template even if the user does not use the feature. Updates and bug fixes had to be copied manually to the user's codebase.
+def mapper(key, value):
+    """Map阶段：将文本拆分为单词"""
+    words = value.split()
+    for word in words:
+        emit(word, 1)
 
-To solve this, I have abstracted the logic to a separate repository - [Pliny](https://github.com/timlrx/pliny). Pliny provides out of the box Next.js components to enhance static sites:
-
-- Analytics
-  - Google Analytics
-  - Plausible Analytics
-  - Simple Analytics
-  - Umami Analytics
-  - Posthog
-- Comments
-  - Disqus
-  - Giscus
-  - Utterances
-- Newsletter (uses Next 13 API Routes)
-  - Buttondown
-  - Convertkit
-  - Email Octopus
-  - Klaviyo
-  - Mailchimp
-  - Revue
-- Command palette search with tailwind style sheet
-  - Algolia
-  - Kbar (local search)
-- UI utility components
-  - Bleed
-  - Newsletter / Blog Newsletter
-  - Pre / Code block
-  - Table of Contents
-
-Choose your preferred service by modifying `siteMetadata.js` and changing the appropriate fields. For example to change from Umami Analytics to Plausible, we can change the following fields:
-
-```diff-js:siteMetadata.js
-analytics: {
--   umamiAnalytics: {
--     // We use an env variable for this site to avoid other users cloning our analytics ID
--     umamiWebsiteId: process.env.NEXT_UMAMI_ID, // e.g. 123e4567-e89b-12d3-a456-426614174000
--   },
-+    plausibleAnalytics: {
-+      plausibleDataDomain: '', // e.g. tailwind-nextjs-starter-blog.vercel.app
-+    },
-},
+def reducer(key, values):
+    """Reduce阶段：统计每个单词的出现次数"""
+    total = sum(values)
+    emit(key, total)
 ```
 
-Changes in the configuration file gets propagated to the components automatically. No modification to the template is required.
+### Hadoop的局限性
 
-Under the hood, Pliny exports high level components such as `<Analytics analyticsConfig={analyticsConfig}/>` and `<Comments commentsConfig={commentsConfig}/>` which takes in a configuration object and renders the appropriate component. Since the layouts are defined on the server side, Next.js is able to use the configuration object to determine which component to render and send only the required component bundle to the client.
+- MapReduce中间结果写入磁盘，性能受限
+- 不适合迭代计算和交互式查询
+- 编程模型较为底层
 
-## New Search Component
+## Spark：内存计算的革命
 
-What's a blog in 2023 without a command palette search bar?
+### 核心优势
 
-One of the most highly requested features have been added 🎉! The search component supports 2 search providers - Algolia and Kbar local search.
+Apache Spark通过内存计算大幅提升了大数据处理性能：
 
-### Algolia
+- **速度快**：比MapReduce快10-100倍
+- **易用性**：支持Python、Scala、Java、R多种语言
+- **统一引擎**：批处理、流处理、SQL查询、机器学习一体化
 
-[Algolia Docsearch](https://docsearch.algolia.com/) is popular free service used across many documentation websites. It automatically scrapes the website that has is submitted for indexing and makes the search result available via a beautiful dialog modal. The pliny component is greatly inspired by the Docusaurus implementation and comes with a stylesheet that is compatible with the Tailwind CSS theme.
+### RDD与DataFrame
 
-### Kbar
+```python
+from pyspark.sql import SparkSession
 
-[Kbar](https://github.com/timc1/kbar) is a fast, portable, and extensible cmd+k interface. The pliny implementation uses kbar to create a local search dialog box. The component loads a JSON file, default `search.json`, that was created in the contentlayer build process. Try pressing ⌘-k or ctrl-k to see the search bar in action!
+# 创建SparkSession
+spark = SparkSession.builder \
+    .appName("大数据分析示例") \
+    .getOrCreate()
 
-## Styling and Layout Updates
+# 读取CSV数据
+df = spark.read.csv("data/sales.csv", header=True, inferSchema=True)
 
-### Theming
+# DataFrame API操作
+# 按产品类别统计销售总额
+result = df.groupBy("category") \
+    .agg(
+        sum("amount").alias("total_sales"),
+        count("*").alias("order_count"),
+        avg("amount").alias("avg_amount")
+    ) \
+    .orderBy("total_sales", ascending=False)
 
-`tailwind.config.js` has been updated to use tailwind typography defaults where possible and to use the built-in support for dark mode via the `prose-invert` class. This replaces the previous `prose-dark` class and configuration.
+result.show()
+```
 
-The primary theme color is updated from `teal` to `pink` and the primary gray theme from `neutral` to `gray`.
+### Spark SQL
 
-Inter is now replaced with Space Grotesk as the default font.
+```python
+# 注册临时视图
+df.createOrReplaceTempView("sales")
 
-### New Layouts
+# 使用SQL查询
+top_products = spark.sql("""
+    SELECT
+        category,
+        SUM(amount) as total_sales,
+        COUNT(*) as order_count,
+        ROUND(AVG(amount), 2) as avg_amount
+    FROM sales
+    WHERE date >= '2024-01-01'
+    GROUP BY category
+    HAVING total_sales > 10000
+    ORDER BY total_sales DESC
+    LIMIT 10
+""")
 
-Layout components available in the `layouts` directory, provide a simple way to customize the look and feel of the blog.[^2]
+top_products.show()
+```
 
-The downside of building a popular template is that you start seeing multiple similar sites everywhere 😆. While users are encouraged to customized the layouts to their liking, having more layout options that are easily switchable promotes diversity and perhaps can be a good starting point for further customizations.
+### Spark Streaming
 
-In v2, I added a new post layout - `PostBanner`. It features a large banner image and a centered content container. Check out "[Pictures of Canada](/blog/pictures-of-canada)" blog post which has been updated to use the new layout.
+```python
+# 结构化流处理示例：实时统计
+lines = spark.readStream \
+    .format("kafka") \
+    .option("kafka.bootstrap.servers", "localhost:9092") \
+    .option("subscribe", "user-events") \
+    .load()
 
-The default blog listing layout has also been updated to include a side bar with blog tags. The search bar in the previous layout has been replace with the new command palette search. To switch back to the old layout, simply change the pages that use the `ListLayoutWithTags` component back to the original `ListLayout`.
+# 解析JSON数据
+from pyspark.sql.functions import from_json, col
+from pyspark.sql.types import StructType, StringType, LongType
 
-## Migration Recommendations
+schema = StructType() \
+    .add("user_id", StringType()) \
+    .add("action", StringType()) \
+    .add("timestamp", LongType())
 
-Due to the large changes in directory structure, setup and tooling, I recommend starting from a fresh template and copying existing content, followed by incrementally migrating changes over to the new template.
+events = lines.select(
+    from_json(col("value").cast("string"), schema).alias("data")
+).select("data.*")
 
-Styling changes should be relatively minor and can be copied over from the old `tailwind.config.js` to the new one. If copying over, you might need to add back the `prose-dark` class to components that opt into tailwind typography styling. Do modify the font import in the root layout component to use the desired font of choice.
+# 按5分钟窗口统计用户行为
+windowed_counts = events \
+    .groupBy(
+        events.action,
+        window(events.timestamp.cast("timestamp"), "5 minutes")
+    ) \
+    .count()
+```
 
-Changes to the MDX processing pipeline and schema can be easily ported to the new Contentlayer setup. If there are changes to the frontmatter fields, you can modify the document type in `contentlayer.config.ts` to include the new fields. Custom plugins can be added to the `remarkPlugins` and `rehypePlugins` properties in the `makeSource` export of `contentlayer.config.ts`.
+## Flink：真正的流处理引擎
 
-Markdown layouts are no longer sourced automatically from the `layouts` directory. Instead, they have to be specified in the `layouts` object defined in `blog/[...slug]/page.tsx`.[^3]
+### Flink vs Spark Streaming
 
-To port over larger components or pages, I recommend first specificing it as a client component by using the `"use client"` directive. Once it renders correctly, you can split the interactive components (parts that rely on `use` hooks) as a client component and keep the remaining code as a server component. Consult the comprehensive Next.js [migration guide](https://nextjs.org/docs/app/building-your-application/upgrading/app-router-migration#migrating-from-pages-to-app) for more details.
+| 特性 | Spark Streaming | Flink |
+|------|----------------|-------|
+| 处理模型 | 微批处理 | 真正的逐条流处理 |
+| 延迟 | 秒级 | 毫秒级 |
+| 状态管理 | 有限 | 强大的状态管理 |
+| 容错机制 | RDD血统 | Checkpoint机制 |
+| 时间语义 | 处理时间为主 | 事件时间 + 水位线 |
 
-## Conclusion
+### Flink应用场景
 
-I hope you enjoy the new features and improvements in V2. If you have any feedback or suggestions, feel free to open an issue or reach out to me on [Twitter](https://twitter.com/timlrx).
+- 实时风控：金融交易欺诈检测
+- 实时监控：服务器指标告警
+- 实时推荐：用户行为分析与个性化推荐
+- ETL：实时数据同步与转换
 
-## Support
+## 大数据技术选型指南
 
-Using the template? Support this effort by giving a star on GitHub, sharing your own blog and giving a shoutout on Twitter or be a project [sponsor](https://github.com/sponsors/timlrx).
+```
+数据存储层：
+├── HDFS          → 大规模批数据存储
+├── Hive          → 数据仓库（SQL on Hadoop）
+├── HBase         → 实时读写NoSQL数据库
+└── Kafka         → 高吞吐消息队列
 
-## Licence
+数据处理层：
+├── Spark         → 批处理 + 微批流处理
+├── Flink         → 真正的流处理
+└── MapReduce     → 传统批处理（逐步被替代）
 
-[MIT](https://github.com/timlrx/tailwind-nextjs-starter-blog/blob/main/LICENSE) © [Timothy Lin](https://www.timrlx.com)
+数据分析层：
+├── Spark SQL     → SQL查询引擎
+├── Presto/Trino  → 交互式查询引擎
+└── MLlib         → 分布式机器学习
+```
 
-[^1]: The previous version injects Preact into the production build. However, this is no longer possible as it does not support React Server Components. While overall bundle size has increased to about 85kB, most of the content can be pre-rendered on the server side, resulting in a low first contentful paint and time to interactive. Using React throughtout also leads to more consistent behavior with external libraries and components.
+## 总结
 
-[^2]: This is different from Next.js App Directory layouts and are best thought of as reusable React containers.
+大数据技术生态庞大且发展迅速。对于大多数场景：
 
-[^3]: This takes advantage of Server Components by making it simple to specify the layout of choice in the markdown file and match against the `layouts` object which is then used to render the appropriate layout component.
+- **离线批处理**：首选Spark，性能优异且API友好
+- **实时流处理**：首选Flink，真正的流处理引擎
+- **数据存储**：HDFS + Hive/HBase组合
+- **消息队列**：Kafka作为数据管道
+
+选择技术栈时，需要根据业务需求、数据规模、延迟要求和团队技术能力综合考量。

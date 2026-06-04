@@ -3,6 +3,10 @@
  * 英文翻译字典，包含所有 UI 文本的英文版本
  */
 const en = {
+    // Site info / 站点信息
+    'site.headerTitle': 'Tech Blog',
+    'site.description': 'A tech blog focused on Web Development, Big Data, Software Engineering & Programming',
+
     // Navigation / 导航
     'nav.home': 'Home',
     'nav.blog': 'Blog',

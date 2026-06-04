@@ -1,38 +1,193 @@
 ---
-title: Sample .md file
-date: '2016-03-08'
-tags: ['markdown', 'code', 'features']
+title: 'Git版本控制深入理解与实战技巧'
+date: '2024-02-20'
+tags: ['Git', '版本控制', '编程', '软件工程']
 draft: false
-summary: Example of a markdown file with code blocks and syntax highlighting
+summary: '从Git的基础概念到高级用法，深入理解分支管理、合并策略和团队协作的最佳实践。'
 ---
 
-A sample post with markdown.
+# Git版本控制深入理解与实战技巧
 
-## Inline Highlighting
+Git是目前最流行的分布式版本控制系统，几乎所有软件开发项目都离不开Git。本文将从基础到进阶，全面介绍Git的核心概念和实用技巧。
 
-Sample of inline highlighting `sum = parseInt(num1) + parseInt(num2)`
+## Git基础概念
 
-## Code Blocks
+### 工作区、暂存区与版本库
 
-Some Javascript code
+Git的三个核心区域：
 
-```javascript
-var num1, num2, sum
-num1 = prompt('Enter first number')
-num2 = prompt('Enter second number')
-sum = parseInt(num1) + parseInt(num2) // "+" means "add"
-alert('Sum = ' + sum) // "+" means combine into a string
+- **工作区（Working Directory）**：你实际编辑文件的目录
+- **暂存区（Staging Area）**：准备提交到版本库的文件临时存放区
+- **版本库（Repository）**：存储所有提交历史的数据库
+
+```bash
+# 查看文件状态
+git status
+
+# 将文件添加到暂存区
+git add filename.txt
+
+# 提交到版本库
+git commit -m "添加新功能说明"
 ```
 
-Some Python code 🐍
+### 常用命令速查
 
-```python
-def fib():
-    a, b = 0, 1
-    while True:            # First iteration:
-        yield a            # yield 0 to start with and then
-        a, b = b, a + b    # a will now be 1, and b will also be 1, (0 + 1)
+```bash
+# 初始化仓库
+git init
 
-for index, fibonacci_number in zip(range(10), fib()):
-     print('{i:3}: {f:3}'.format(i=index, f=fibonacci_number))
+# 克隆远程仓库
+git clone https://github.com/user/repo.git
+
+# 查看提交历史
+git log --oneline --graph --all
+
+# 查看差异
+git diff              # 工作区 vs 暂存区
+git diff --staged     # 暂存区 vs 版本库
+git diff HEAD         # 工作区 vs 版本库
 ```
+
+## 分支管理
+
+### 分支的本质
+
+Git的分支本质上只是一个指向某个提交的轻量级指针。创建和切换分支的速度非常快，这是Git最强大的特性之一。
+
+```bash
+# 创建并切换到新分支
+git checkout -b feature/user-login
+
+# 或者使用新语法
+git switch -c feature/user-login
+
+# 查看所有分支
+git branch -a
+
+# 删除已合并的分支
+git branch -d feature/user-login
+```
+
+### 分支策略
+
+常见的分支策略：
+
+**Git Flow**：适合有明确版本发布的项目
+
+```
+main        ← 稳定版本
+develop     ← 开发主线
+feature/*   ← 新功能开发
+release/*   ← 发布准备
+hotfix/*    ← 紧急修复
+```
+
+**GitHub Flow**：适合持续部署的项目
+
+```
+main        ← 始终可部署
+feature/*   ← 从main创建，合并回main
+```
+
+## 合并与冲突解决
+
+### 合并方式
+
+```bash
+# 普通合并
+git merge feature/user-login
+
+# 变基合并（保持提交历史线性）
+git rebase main
+
+# 压缩合并（将多个提交合并为一个）
+git merge --squash feature/user-login
+```
+
+### 解决冲突
+
+当两个分支修改了同一文件的同一部分时，会产生冲突：
+
+```
+<<<<<<< HEAD
+这是当前分支的内容
+=======
+这是要合并分支的内容
+>>>>>>> feature/user-login
+```
+
+解决步骤：
+1. 编辑冲突文件，选择保留的内容
+2. 删除冲突标记（`<<<<<<<`、`=======`、`>>>>>>>`）
+3. `git add` 标记为已解决
+4. `git commit` 完成合并
+
+## 高级技巧
+
+### 暂存工作（Stash）
+
+临时保存未完成的工作：
+
+```bash
+# 暂存当前修改
+git stash save "正在开发登录功能"
+
+# 查看暂存列表
+git stash list
+
+# 恢复暂存内容
+git stash pop stash@{0}
+```
+
+### 交互式变基
+
+整理提交历史，让历史更加清晰：
+
+```bash
+# 对最近3个提交进行交互式变基
+git rebase -i HEAD~3
+```
+
+在编辑器中可以选择：
+- `pick` - 保留提交
+- `reword` - 修改提交信息
+- `squash` - 合并到上一个提交
+- `drop` - 删除提交
+
+### Cherry-pick
+
+选择性地将某个提交应用到当前分支：
+
+```bash
+# 将指定提交应用到当前分支
+git cherry-pick abc1234
+
+# 应用多个提交
+git cherry-pick abc1234..def5678
+```
+
+## 团队协作最佳实践
+
+1. **频繁提交，小步前进** - 每个提交只完成一个小功能
+2. **编写清晰的提交信息** - 说明做了什么、为什么做
+3. **代码审查** - 通过Pull Request进行代码审查
+4. **保持分支同步** - 定期从主分支rebase或merge
+
+## 提交信息规范
+
+推荐使用约定式提交（Conventional Commits）格式：
+
+```
+feat: 添加用户登录功能
+fix: 修复首页加载白屏问题
+docs: 更新API文档
+style: 调整代码格式
+refactor: 重构用户模块
+test: 添加单元测试
+chore: 更新依赖版本
+```
+
+## 总结
+
+Git不仅仅是一个版本控制工具，更是团队协作的基础设施。掌握Git的核心概念和高级技巧，能够显著提升开发效率和代码质量。建议每位开发者都花时间深入学习Git，这将是职业生涯中最重要的技能之一。

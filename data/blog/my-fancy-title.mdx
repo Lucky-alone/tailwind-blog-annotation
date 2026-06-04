@@ -1,10 +1,211 @@
 ---
-title: My fancy title
-date: '2021-01-31'
-tags: ['hello']
-draft: true
-summary: draft post
+title: 'TypeScript高级类型编程指南'
+date: '2024-08-10'
+tags: ['TypeScript', '编程', '前端', '类型系统']
+draft: false
+summary: '深入探索TypeScript的高级类型系统，包括泛型、条件类型、映射类型和模板字面量类型，提升你的类型编程能力。'
 images: []
 ---
 
-Draft post which should not display
+# TypeScript高级类型编程指南
+
+TypeScript的类型系统非常强大，掌握高级类型可以大幅提升代码的类型安全性和开发体验。本文将带你深入探索TypeScript的类型编程技巧。
+
+## 泛型基础
+
+泛型是类型编程的基石，它让我们可以编写可复用的类型定义：
+
+```typescript
+// 基础泛型函数
+function identity<T>(value: T): T {
+  return value
+}
+
+// 泛型接口
+interface ApiResponse<T> {
+  code: number
+  message: string
+  data: T
+}
+
+// 使用
+const response: ApiResponse<User[]> = {
+  code: 200,
+  message: '成功',
+  data: [{ name: '张三', age: 25 }]
+}
+```
+
+## 条件类型
+
+条件类型根据条件选择不同的类型，类似于类型层面的if-else：
+
+```typescript
+// 基础条件类型
+type IsString<T> = T extends string ? '是字符串' : '不是字符串'
+
+type A = IsString<'hello'>  // '是字符串'
+type B = IsString<42>       // '不是字符串'
+
+// 实用场景：提取Promise的内部类型
+type UnwrapPromise<T> = T extends Promise<infer U> ? U : T
+
+type C = UnwrapPromise<Promise<string>>  // string
+type D = UnwrapPromise<number>           // number
+
+// 提取函数返回值类型
+type GetReturnType<T> = T extends (...args: any[]) => infer R ? R : never
+
+type E = GetReturnType<() => boolean>  // boolean
+```
+
+## 映射类型
+
+映射类型可以基于已有类型创建新类型：
+
+```typescript
+// 将所有属性变为可选
+type MyPartial<T> = {
+  [K in keyof T]?: T[K]
+}
+
+// 将所有属性变为只读
+type MyReadonly<T> = {
+  readonly [K in keyof T]: T[K]
+}
+
+// 将所有属性变为必填
+type MyRequired<T> = {
+  [K in keyof T]-?: T[K]
+}
+
+// 实用示例：将对象所有属性变为string类型
+type Stringify<T> = {
+  [K in keyof T]: string
+}
+
+interface User {
+  id: number
+  name: string
+  age: number
+  email: string
+}
+
+type UserStrings = Stringify<User>
+// { id: string; name: string; age: string; email: string }
+```
+
+## 模板字面量类型
+
+TypeScript 4.1引入的模板字面量类型，可以在类型层面进行字符串操作：
+
+```typescript
+// 基础字符串拼接
+type EventName = `on${Capitalize<string>}`
+
+// 实用场景：CSS类名生成
+type Color = 'red' | 'green' | 'blue'
+type Size = 'sm' | 'md' | 'lg'
+type ClassName = `${Size}-${Color}`
+// 'sm-red' | 'sm-green' | 'sm-blue' | 'md-red' | ...
+
+// 事件处理器类型
+type EventHandler<T extends string> = `handle${Capitalize<T>}`
+
+type Events = EventHandler<'click'> | EventHandler<'submit'>
+// 'handleClick' | 'handleSubmit'
+```
+
+## 实用工具类型
+
+### DeepPartial：深层可选
+
+```typescript
+type DeepPartial<T> = {
+  [K in keyof T]?: T[K] extends object ? DeepPartial<T[K]> : T[K]
+}
+
+interface Config {
+  database: {
+    host: string
+    port: number
+    credentials: {
+      username: string
+      password: string
+    }
+  }
+}
+
+// 所有层级的属性都变为可选
+type PartialConfig = DeepPartial<Config>
+```
+
+### DeepReadonly：深层只读
+
+```typescript
+type DeepReadonly<T> = {
+  readonly [K in keyof T]: T[K] extends object ? DeepReadonly<T[K]> : T[K]
+}
+
+const config: DeepReadonly<Config> = { /* ... */ }
+// config.database.host = 'new'  // 错误！所有属性都是只读的
+```
+
+### Pick与Omit的自定义实现
+
+```typescript
+// 从类型中选取指定属性
+type MyPick<T, K extends keyof T> = {
+  [P in K]: T[P]
+}
+
+// 从类型中排除指定属性
+type MyOmit<T, K extends keyof T> = {
+  [P in Exclude<keyof T, K>]: T[P]
+}
+
+type UserBasic = MyPick<User, 'name' | 'age'>
+// { name: string; age: number }
+
+type UserWithoutEmail = MyOmit<User, 'email'>
+// { id: number; name: string; age: number }
+```
+
+## 类型守卫
+
+```typescript
+// 自定义类型守卫
+interface Dog {
+  bark(): void
+  name: string
+}
+
+interface Cat {
+  meow(): void
+  name: string
+}
+
+function isDog(pet: Dog | Cat): pet is Dog {
+  return 'bark' in pet
+}
+
+function greet(pet: Dog | Cat) {
+  if (isDog(pet)) {
+    pet.bark()  // TypeScript知道这里是Dog类型
+  } else {
+    pet.meow()  // TypeScript知道这里是Cat类型
+  }
+}
+```
+
+## 总结
+
+TypeScript的高级类型系统让代码更加安全和可维护。关键要点：
+
+- **泛型**：类型复用的基础
+- **条件类型**：类型层面的条件判断
+- **映射类型**：基于已有类型生成新类型
+- **模板字面量**：类型层面的字符串操作
+- **类型守卫**：运行时类型判断与编译时类型推导的桥梁
+
+掌握这些技巧，你就能充分发挥TypeScript类型系统的能力！

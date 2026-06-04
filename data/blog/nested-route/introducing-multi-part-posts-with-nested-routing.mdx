@@ -1,30 +1,193 @@
 ---
-title: Introducing Multi-part Posts with Nested Routing
-date: '2021-05-02'
-tags: ['multi-author', 'next-js', 'feature']
+title: '软件工程中的经典设计模式'
+date: '2024-09-05'
+tags: ['设计模式', '软件工程', '编程', '架构']
 draft: false
-summary: 'The blog template supports posts in nested sub-folders. This can be used to group posts of similar content e.g. a multi-part course. This post is itself an example of a nested route!'
+summary: '通过JavaScript/TypeScript代码示例，深入理解软件工程中常用的设计模式，包括创建型、结构型和行为型模式。'
 ---
 
-# Nested Routes
+# 软件工程中的经典设计模式
 
-The blog template supports posts in nested sub-folders. This helps in organisation and can be used to group posts of similar content e.g. a multi-part series. This post is itself an example of a nested route! It's located in the `/data/blog/nested-route` folder.
+设计模式是软件开发中经过验证的通用解决方案。本文将通过TypeScript代码示例，介绍最常用的设计模式及其在实际开发中的应用。
 
-## How
+## 创建型模式
 
-Simplify create multiple folders inside the main `/data/blog` folder and add your `.md`/`.mdx` files to them. You can even create something like `/data/blog/nested-route/deeply-nested-route/my-post.md`
+### 单例模式（Singleton）
 
-We use Next.js catch all routes to handle the routing and path creations.
+确保一个类只有一个实例，并提供全局访问点：
 
-## Use Cases
+```typescript
+class DatabaseConnection {
+  private static instance: DatabaseConnection
+  private connection: any
 
-Here are some reasons to use nested routes
+  private constructor() {
+    this.connection = this.createConnection()
+  }
 
-- More logical content organisation (blogs will still be displayed based on the created date)
-- Multi-part posts
-- Different sub-routes for each author
-- Internationalization (though it would be recommended to use [Next.js built-in i8n routing](https://nextjs.org/docs/advanced-features/i18n-routing))
+  static getInstance(): DatabaseConnection {
+    if (!DatabaseConnection.instance) {
+      DatabaseConnection.instance = new DatabaseConnection()
+    }
+    return DatabaseConnection.instance
+  }
 
-## Note
+  private createConnection() {
+    console.log('创建数据库连接...')
+    return { connected: true }
+  }
 
-- The previous/next post links at bottom of the template are currently sorted by date. One could explore modifying the template to refer the reader to the previous/next post in the series, rather than by date.
+  query(sql: string) {
+    console.log(`执行查询: ${sql}`)
+    return []
+  }
+}
+
+// 使用
+const db1 = DatabaseConnection.getInstance()
+const db2 = DatabaseConnection.getInstance()
+console.log(db1 === db2) // true - 同一个实例
+```
+
+### 工厂模式（Factory）
+
+定义创建对象的接口，让子类决定实例化哪个类：
+
+```typescript
+interface Notification {
+  send(message: string): void
+}
+
+class EmailNotification implements Notification {
+  send(message: string) {
+    console.log(`发送邮件通知: ${message}`)
+  }
+}
+
+class SMSNotification implements Notification {
+  send(message: string) {
+    console.log(`发送短信通知: ${message}`)
+  }
+}
+
+class PushNotification implements Notification {
+  send(message: string) {
+    console.log(`发送推送通知: ${message}`)
+  }
+}
+
+class NotificationFactory {
+  static create(type: 'email' | 'sms' | 'push'): Notification {
+    switch (type) {
+      case 'email': return new EmailNotification()
+      case 'sms': return new SMSNotification()
+      case 'push': return new PushNotification()
+    }
+  }
+}
+
+// 使用
+const notification = NotificationFactory.create('email')
+notification.send('你的订单已发货')
+```
+
+## 结构型模式
+
+### 观察者模式（Observer）
+
+定义对象间的一对多依赖关系：
+
+```typescript
+interface Observer {
+  update(event: string, data: any): void
+}
+
+class EventBus {
+  private listeners: Map<string, Observer[]> = new Map()
+
+  subscribe(event: string, observer: Observer) {
+    const observers = this.listeners.get(event) || []
+    observers.push(observer)
+    this.listeners.set(event, observers)
+  }
+
+  publish(event: string, data: any) {
+    const observers = this.listeners.get(event) || []
+    observers.forEach(observer => observer.update(event, data))
+  }
+}
+
+class Logger implements Observer {
+  update(event: string, data: any) {
+    console.log(`[日志] 事件: ${event}, 数据:`, data)
+  }
+}
+
+class AlertService implements Observer {
+  update(event: string, data: any) {
+    console.log(`[告警] 检测到 ${event} 事件`)
+  }
+}
+
+// 使用
+const bus = new EventBus()
+bus.subscribe('user-login', new Logger())
+bus.subscribe('user-login', new AlertService())
+bus.publish('user-login', { userId: 123 })
+```
+
+## 行为型模式
+
+### 策略模式（Strategy）
+
+定义一系列算法，把它们封装并使它们可以互换：
+
+```typescript
+interface SortStrategy {
+  sort(data: number[]): number[]
+}
+
+class BubbleSort implements SortStrategy {
+  sort(data: number[]): number[] {
+    const arr = [...data]
+    for (let i = 0; i < arr.length; i++) {
+      for (let j = 0; j < arr.length - i - 1; j++) {
+        if (arr[j] > arr[j + 1]) {
+          [arr[j], arr[j + 1]] = [arr[j + 1], arr[j]]
+        }
+      }
+    }
+    return arr
+  }
+}
+
+class QuickSort implements SortStrategy {
+  sort(data: number[]): number[] {
+    if (data.length <= 1) return data
+    const pivot = data[0]
+    const left = data.filter(x => x < pivot)
+    const right = data.filter(x => x > pivot)
+    return [...this.sort(left), pivot, ...this.sort(right)]
+  }
+}
+
+class Sorter {
+  constructor(private strategy: SortStrategy) {}
+
+  setStrategy(strategy: SortStrategy) {
+    this.strategy = strategy
+  }
+
+  sort(data: number[]): number[] {
+    return this.strategy.sort(data)
+  }
+}
+
+// 使用
+const sorter = new Sorter(new QuickSort())
+console.log(sorter.sort([5, 3, 8, 1, 9, 2]))
+```
+
+## 总结
+
+设计模式是软件工程的宝贵经验总结，合理运用可以提高代码的可维护性和可扩展性。但不要过度使用设计模式——简单问题用简单方案解决，只在需要时才引入模式。

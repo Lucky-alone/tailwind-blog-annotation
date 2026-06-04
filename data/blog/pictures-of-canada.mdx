@@ -1,82 +1,138 @@
 ---
-title: O Canada
-date: '2017-07-15'
-tags: ['holiday', 'canada', 'images']
+title: 'CSS Grid与Flexbox布局实战'
+date: '2024-05-12'
+tags: ['CSS', 'Web开发', '前端', '布局']
 draft: false
 layout: PostBanner
 images: ['/static/images/canada/mountains.jpg']
-summary: The scenic lands of Canada featuring maple leaves, snow-capped mountains, turquoise lakes and Toronto. Take in the sights in this photo gallery exhibition and see how easy it is to replicate with some MDX magic and tailwind classes.
+summary: '通过实战案例掌握CSS Grid和Flexbox两大布局利器，学会构建响应式、灵活的网页布局。
 ---
 
-The scenic lands of Canada featuring maple leaves, snow-capped mountains, turquoise lakes and Toronto. Take in the sights in this photo gallery exhibition and see how easy it is to replicate with some MDX magic and tailwind classes.
+# CSS Grid与Flexbox布局实战
 
-Features images served using `next/image` component. The locally stored images are located in a folder with the following path: `/static/images/canada/[filename].jpg`
+现代Web开发中，CSS Grid和Flexbox是两大核心布局方案。本文将通过实际案例，帮助你掌握这两种布局方式的精髓。
 
-Since we are using mdx, we can create a simple responsive flexbox grid to display our images with a few tailwind css classes.
+## Flexbox：一维布局利器
 
----
+Flexbox适合处理一维布局（一行或一列），是最常用的布局方式。
 
-# Gallery
+### 基础示例
+
+```css
+.flex-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.flex-item {
+  flex: 1;
+  padding: 1rem;
+}
+```
+
+### 实战：响应式卡片布局
+
+使用Tailwind CSS实现响应式卡片网格：
 
 <div className="-mx-2 flex flex-wrap overflow-hidden xl:-mx-2">
   <div className="my-1 w-full overflow-hidden px-2 xl:my-1 xl:w-1/2 xl:px-2">
-    ![Maple](/static/images/canada/maple.jpg)
+    ![示例1](/static/images/canada/maple.jpg)
   </div>
   <div className="my-1 w-full overflow-hidden px-2 xl:my-1 xl:w-1/2 xl:px-2">
-    ![Lake](/static/images/canada/lake.jpg)
+    ![示例2](/static/images/canada/lake.jpg)
   </div>
   <div className="my-1 w-full overflow-hidden px-2 xl:my-1 xl:w-1/2 xl:px-2">
-    ![Mountains](/static/images/canada/mountains.jpg)
+    ![示例3](/static/images/canada/mountains.jpg)
   </div>
   <div className="my-1 w-full overflow-hidden px-2 xl:my-1 xl:w-1/2 xl:px-2">
-    ![Toronto](/static/images/canada/toronto.jpg)
+    ![示例4](/static/images/canada/toronto.jpg)
   </div>
 </div>
 
-# Implementation
+### 常用Flexbox属性
 
-```js
+```jsx
 <div className="-mx-2 flex flex-wrap overflow-hidden xl:-mx-2">
   <div className="my-1 w-full overflow-hidden px-2 xl:my-1 xl:w-1/2 xl:px-2">
-    ![Maple](/static/images/canada/maple.jpg)
+    ![示例1](/static/images/canada/maple.jpg)
   </div>
   <div className="my-1 w-full overflow-hidden px-2 xl:my-1 xl:w-1/2 xl:px-2">
-    ![Lake](/static/images/canada/lake.jpg)
+    ![示例2](/static/images/canada/lake.jpg)
   </div>
   <div className="my-1 w-full overflow-hidden px-2 xl:my-1 xl:w-1/2 xl:px-2">
-    ![Mountains](/static/images/canada/mountains.jpg)
+    ![示例3](/static/images/canada/mountains.jpg)
   </div>
   <div className="my-1 w-full overflow-hidden px-2 xl:my-1 xl:w-1/2 xl:px-2">
-    ![Toronto](/static/images/canada/toronto.jpg)
+    ![示例4](/static/images/canada/toronto.jpg)
   </div>
 </div>
 ```
 
-With MDX v2, one can interleave markdown in jsx as shown in the example code.
+## CSS Grid：二维布局神器
 
-### Photo Credits
+CSS Grid适合处理二维布局（同时控制行和列），是构建复杂页面布局的最佳选择。
 
-<div>
-  Maple photo by [Guillaume
-  Jaillet](https://unsplash.com/@i_am_g?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText)
-  on
-  [Unsplash](https://unsplash.com/s/photos/canada?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText)
-</div>
-<div>
-  Mountains photo by [John
-  Lee](https://unsplash.com/@john_artifexfilms?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText)
-  on
-  [Unsplash](https://unsplash.com/s/photos/canada?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText)
-</div>
-<div>
-  Lake photo by [Tj
-  Holowaychuk](https://unsplash.com/@tjholowaychuk?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText)
-  on
-  [Unsplash](https://unsplash.com/s/photos/canada?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText)
-</div>
-<div>
-  Toronto photo by [Matthew
-  Henry](https://unsplash.com/@matthewhenry?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText)
-  on
-  [Unsplash](https://unsplash.com/s/photos/canada?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText)
-</div>
+### 基础网格
+
+```css
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: auto;
+  gap: 20px;
+}
+```
+
+### 响应式网格
+
+使用`auto-fill`和`minmax`实现自适应网格：
+
+```css
+.auto-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+```
+
+### 实战：仪表盘布局
+
+```css
+.dashboard {
+  display: grid;
+  grid-template-areas:
+    "header header header"
+    "sidebar main main"
+    "sidebar footer footer";
+  grid-template-columns: 250px 1fr 1fr;
+  grid-template-rows: 60px 1fr 40px;
+  height: 100vh;
+}
+
+.header  { grid-area: header; }
+.sidebar { grid-area: sidebar; }
+.main    { grid-area: main; }
+.footer  { grid-area: footer; }
+```
+
+## Flexbox vs Grid：如何选择
+
+| 场景 | 推荐方案 | 理由 |
+|------|---------|------|
+| 导航栏 | Flexbox | 一维水平排列 |
+| 卡片列表 | Grid | 二维网格布局更直观 |
+| 居中对齐 | Flexbox | 语法简单 |
+| 复杂页面布局 | Grid | 精确控制行列 |
+| 不等宽列 | Grid | grid-template更灵活 |
+| 工具栏 | Flexbox | 项目自动排列 |
+
+## 总结
+
+Flexbox和CSS Grid各有优势，在实际开发中经常配合使用：
+
+- **Flexbox** 处理组件内部的元素排列（导航栏、按钮组、表单）
+- **Grid** 处理页面级的整体布局（仪表盘、画廊、文章排版）
+
+掌握这两种布局方式，你就能应对几乎所有的Web布局需求！

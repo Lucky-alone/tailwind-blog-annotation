@@ -7,20 +7,18 @@ interface Project {
 
 const projectsData: Project[] = [
   {
-    title: 'A Search Engine',
-    description: `What if you could look up any information in the world? Webpages, images, videos
-    and more. Google has many features to help you find exactly what you're looking
-    for.`,
+    title: '智能数据分析平台',
+    description: `基于React与Python构建的企业级数据分析平台，支持实时数据可视化、自动化报表生成、
+    多维度数据钻取等功能，帮助团队快速洞察业务数据背后的规律。`,
     imgSrc: '/static/images/google.png',
-    href: 'https://www.google.com',
+    href: '/blog',
   },
   {
-    title: 'The Time Machine',
-    description: `Imagine being able to travel back in time or to the future. Simple turn the knob
-    to the desired date and press "Go". No more worrying about lost keys or
-    forgotten headphones with this simple yet affordable solution.`,
+    title: '开源微服务框架',
+    description: `一套轻量级的微服务开发框架，提供服务注册与发现、配置中心、链路追踪、
+    熔断限流等核心能力，帮助开发者快速构建高可用的分布式系统。`,
     imgSrc: '/static/images/time-machine.jpg',
-    href: '/blog/the-time-machine',
+    href: '/blog',
   },
 ]
 

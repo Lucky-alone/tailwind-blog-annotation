@@ -3,6 +3,10 @@
  * 中文翻译字典，包含所有 UI 文本的中文版本
  */
 const zh = {
+    // Site info / 站点信息
+    'site.headerTitle': '技术博客',
+    'site.description': '一个专注于Web开发、大数据、软件工程与编程技术的技术博客',
+
     // Navigation / 导航
     'nav.home': '首页',
     'nav.blog': '博客',

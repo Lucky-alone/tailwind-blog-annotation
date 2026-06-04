@@ -1,72 +1,136 @@
 ---
-title: Images in Next.js
-date: '2020-11-11'
-tags: ['next js', 'guide']
+title: 'Next.js图片优化完全指南'
+date: '2024-04-08'
+tags: ['Next.js', 'Web开发', '性能优化', '前端']
 draft: false
-summary: 'In this article we introduce adding images in the tailwind starter blog and the benefits and limitations of the next/image component.'
+summary: '深入讲解Next.js内置Image组件的使用方法、优化原理和最佳实践，帮助你构建高性能的Web应用。'
 authors: ['sparrowhawk']
 ---
 
-# Introduction
+# Next.js图片优化完全指南
 
-The tailwind starter blog has out of the box support for [Next.js's built-in image component](https://nextjs.org/docs/api-reference/next/image) and automatically swaps out default image tags in markdown or mdx documents to use the Image component provided.
+图片优化是Web性能优化中最重要的环节之一。Next.js提供了内置的`next/image`组件，可以自动处理图片优化，大幅提升页面加载速度。
 
-# Usage
+## 为什么图片优化很重要
 
-To use in a new page route / javascript file, simply import the image component and call it e.g.
+未经优化的图片是Web页面体积最大的资源之一。一个未经压缩的高清图片可能达到数MB，严重影响页面加载速度和用户体验。
 
-```js
+关键指标：
+- **LCP（Largest Contentful Paint）**：最大内容绘制时间
+- **CLS（Cumulative Layout Shift）**：累积布局偏移
+- **带宽消耗**：移动端用户流量成本
+
+## next/image组件基础用法
+
+### 基本使用
+
+```tsx
 import Image from 'next/image'
 
-function Home() {
+function HomePage() {
   return (
     <>
-      <h1>My Homepage</h1>
-      <Image src="/me.png" alt="Picture of the author" width={500} height={500} />
-      <p>Welcome to my homepage!</p>
+      <h1>我的网站首页</h1>
+      <Image
+        src="/static/images/hero.jpg"
+        alt="首页横幅"
+        width={1200}
+        height={600}
+        priority  // 首屏图片优先加载
+      />
+      <p>欢迎来到我们的网站！</p>
     </>
   )
 }
 
-export default Home
+export default HomePage
 ```
 
-For a markdown file, the default image tag can be used and the default `img` tag gets replaced by the `Image` component in the build process.
+### 在Markdown中使用
 
-Assuming we have a file called `ocean.jpg` in `static/images/ocean.jpg`, the following line of code would generate the optimized image.
+在MDX文件中，默认的`img`标签会自动被替换为`Image`组件：
 
 ```
-![ocean](/static/images/ocean.jpg)
+![海景图](/static/images/ocean.jpg)
 ```
 
-Alternatively, since we are using mdx, we can just use the image component directly! Note, that you would have to provide a fixed width and height. The `img` tag method parses the dimension automatically.
+也可以直接使用JSX语法：
 
-```js
-<Image alt="ocean" src="/static/images/ocean.jpg" width={256} height={128} />
+```jsx
+<Image alt="海景图" src="/static/images/ocean.jpg" width={800} height={400} />
 ```
-
-_Note_: If you try to save the image, it is in webp format, if your browser supports it!
 
 ![ocean](/static/images/ocean.jpeg)
 
-Photo by [YUCAR FotoGrafik](https://unsplash.com/@yucar?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText)
-on [Unsplash](https://unsplash.com/s/photos/sea?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText)
+## 高级特性
 
-# Benefits
+### 响应式图片
 
-- Smaller image size with Webp (~30% smaller than jpeg)
-- Responsive images - the correct image size is served based on the user's viewport
-- Lazy loading - images load as they are scrolled to the viewport
-- Avoids [Cumulative Layout Shift](https://web.dev/cls/)
-- Optimization on demand instead of build-time - no increase in build time!
+使用`fill`属性让图片自动填充父容器：
 
-# Limitations
+```tsx
+<div style={{ position: 'relative', width: '100%', height: '400px' }}>
+  <Image
+    src="/static/images/banner.jpg"
+    alt="横幅图片"
+    fill
+    style={{ objectFit: 'cover' }}
+    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+  />
+</div>
+```
 
-- Due to the reliance on `next/image`, unless you are using an external image CDN like Cloudinary or Imgix, it is practically required to use Vercel for hosting. This is because the component acts like a serverless function that calls a highly optimized image CDN.
+### 图片懒加载
 
-  If you do not want to be tied to Vercel, you can remove `imgToJsx` in `remarkPlugins` in `lib/mdx.js`. This would avoid substituting the default `img` tag.
+`next/image`默认启用懒加载，只有当图片进入视口时才会加载：
 
-  Alternatively, one could wait for image optimization at build time to be supported. A different library, [next-optimized-images](https://github.com/cyrilwanner/next-optimized-images) does that, although it requires transforming the images through webpack which is not done here.
+```tsx
+<Image
+  src="/static/images/gallery1.jpg"
+  alt="画廊图片"
+  width={400}
+  height={300}
+  loading="lazy"        // 延迟加载
+  placeholder="blur"    // 模糊占位符
+  blurDataURL="data:image/jpeg;base64,/9j/4AAQ..."
+/>
+```
 
-- Images from external links are not passed through `next/image`
-- All images have to be stored in the `public` folder e.g `/static/images/ocean.jpeg`
+### 远程图片
+
+使用远程图片需要在`next.config.js`中配置域名白名单：
+
+```js
+// next.config.js
+module.exports = {
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+      },
+    ],
+  },
+}
+```
+
+## 优化效果
+
+| 优化方式 | 说明 | 效果 |
+|---------|------|------|
+| WebP格式转换 | 自动转换为WebP格式 | 体积减少约30% |
+| 响应式尺寸 | 按设备视口提供合适尺寸 | 减少带宽消耗 |
+| 懒加载 | 仅在进入视口时加载 | 提升首屏速度 |
+| 尺寸占位 | 预分配空间防止布局偏移 | 消除CLS |
+| 按需优化 | 请求时才处理，非构建时 | 不增加构建时间 |
+
+## 注意事项
+
+- 所有本地图片需要存放在`public`目录下
+- 远程图片需要在配置文件中声明域名
+- 使用`fill`属性时，父元素必须设置`position: relative`
+- 建议为关键图片设置`priority`属性以预加载
+
+## 总结
+
+`next/image`组件是Next.js提供的一项强大的图片优化功能。通过自动格式转换、响应式尺寸调整和懒加载等机制，它帮助开发者轻松实现高性能的图片加载体验。在实际项目中，合理使用这个组件可以显著提升Web应用的性能指标。

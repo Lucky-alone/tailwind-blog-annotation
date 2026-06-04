@@ -40,10 +40,12 @@ const Header = () => {
           </div>
           {typeof siteMetadata.headerTitle === 'string' ? (
             <div className="hidden h-6 text-2xl font-semibold sm:block">
-              {siteMetadata.headerTitle}
+              {t('site.headerTitle')}
             </div>
           ) : (
-            siteMetadata.headerTitle
+            <div className="hidden h-6 text-2xl font-semibold sm:block">
+              {t('site.headerTitle')}
+            </div>
           )}
         </div>
       </Link>
