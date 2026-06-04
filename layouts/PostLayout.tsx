@@ -40,7 +40,7 @@ interface LayoutProps {
 export default function PostLayout({ content, authorDetails, next, prev, children }: LayoutProps) {
   const { filePath, path, slug, date, title, tags } = content
   const basePath = path.split('/')[0]
-  const { t } = useTranslation()
+  const { t, locale } = useTranslation()
 
   return (
     <SectionContainer>
@@ -54,7 +54,7 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
                   <dt className="sr-only">{t('post.publishedOn')}</dt>
                   <dd className="text-base leading-6 font-medium text-gray-500 dark:text-gray-400">
                     <time dateTime={date}>
-                      {new Date(date).toLocaleDateString(siteMetadata.locale, postDateTemplate)}
+                      {new Date(date).toLocaleDateString(locale === 'zh' ? 'zh-CN' : 'en-US', postDateTemplate)}
                     </time>
                   </dd>
                 </div>

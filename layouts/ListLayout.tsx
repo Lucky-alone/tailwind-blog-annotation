@@ -27,7 +27,7 @@ interface ListLayoutProps {
 
 /** 分页导航组件，支持上一页/下一页切换 */
 function Pagination({ totalPages, currentPage }: PaginationProps) {
-  const { t } = useTranslation()
+  const { t, locale } = useTranslation()
   const pathname = usePathname()
   const segments = pathname.split('/')
   const lastSegment = segments[segments.length - 1]
@@ -78,7 +78,7 @@ export default function ListLayout({
   initialDisplayPosts = [],
   pagination,
 }: ListLayoutProps) {
-  const { t } = useTranslation()
+  const { t, locale } = useTranslation()
   const [searchValue, setSearchValue] = useState('')
   const filteredBlogPosts = posts.filter((post) => {
     const searchContent = post.title + post.summary + post.tags?.join(' ')
@@ -133,7 +133,7 @@ export default function ListLayout({
                   <dl>
                     <dt className="sr-only">{t('blog.publishedOn')}</dt>
                     <dd className="text-base leading-6 font-medium text-gray-500 dark:text-gray-400">
-                      <time dateTime={date}>{formatDate(date, siteMetadata.locale)}</time>
+                      <time dateTime={date}>{formatDate(date, locale === 'zh' ? 'zh-CN' : 'en-US')}</time>
                     </dd>
                   </dl>
                   <div className="space-y-3 xl:col-span-3">

@@ -37,7 +37,7 @@ const LocaleContext = createContext<LocaleContextType | undefined>(undefined)
  * 语言切换时同步更新 localStorage
  */
 export function LocaleProvider({ children }: { children: ReactNode }) {
-    const [locale, setLocaleState] = useState<Locale>('en')
+    const [locale, setLocaleState] = useState<Locale>('zh')
     const [mounted, setMounted] = useState(false)
 
     // 客户端挂载后从 localStorage 读取语言偏好
@@ -55,8 +55,8 @@ export function LocaleProvider({ children }: { children: ReactNode }) {
         localStorage.setItem(LOCALE_STORAGE_KEY, newLocale)
     }, [])
 
-    // 未挂载前返回默认英文，避免水合不匹配
-    const currentLocale = mounted ? locale : 'en'
+    // 未挂载前返回默认中文，避免水合不匹配
+    const currentLocale = mounted ? locale : 'zh'
 
     return (
         <LocaleContext.Provider value={{ locale: currentLocale, setLocale }}>

@@ -26,7 +26,7 @@ interface LayoutProps {
 
 export default function PostLayout({ content, next, prev, children }: LayoutProps) {
   const { path, slug, date, title } = content
-  const { t } = useTranslation()
+  const { t, locale } = useTranslation()
 
   return (
     <SectionContainer>
@@ -39,7 +39,7 @@ export default function PostLayout({ content, next, prev, children }: LayoutProp
                 <div>
                   <dt className="sr-only">{t('post.publishedOn')}</dt>
                   <dd className="text-base leading-6 font-medium text-gray-500 dark:text-gray-400">
-                    <time dateTime={date}>{formatDate(date, siteMetadata.locale)}</time>
+                    <time dateTime={date}>{formatDate(date, locale === 'zh' ? 'zh-CN' : 'en-US')}</time>
                   </dd>
                 </div>
               </dl>

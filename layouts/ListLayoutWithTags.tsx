@@ -29,7 +29,7 @@ interface ListLayoutProps {
 
 /** 分页导航组件，支持上一页/下一页切换 */
 function Pagination({ totalPages, currentPage }: PaginationProps) {
-  const { t } = useTranslation()
+  const { t, locale } = useTranslation()
   const pathname = usePathname()
   const segments = pathname.split('/')
   const lastSegment = segments[segments.length - 1]
@@ -80,7 +80,7 @@ export default function ListLayoutWithTags({
   initialDisplayPosts = [],
   pagination,
 }: ListLayoutProps) {
-  const { t } = useTranslation()
+  const { t, locale } = useTranslation()
   const pathname = usePathname()
   const tagCounts = tagData as Record<string, number>
   const tagKeys = Object.keys(tagCounts)
@@ -143,7 +143,7 @@ export default function ListLayoutWithTags({
                         <dt className="sr-only">{t('blog.publishedOn')}</dt>
                         <dd className="text-base leading-6 font-medium text-gray-500 dark:text-gray-400">
                           <time dateTime={date} suppressHydrationWarning>
-                            {formatDate(date, siteMetadata.locale)}
+                            {formatDate(date, locale === 'zh' ? 'zh-CN' : 'en-US')}
                           </time>
                         </dd>
                       </dl>
