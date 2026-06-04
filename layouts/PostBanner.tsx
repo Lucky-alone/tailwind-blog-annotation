@@ -1,3 +1,10 @@
+'use client'
+
+/**
+ * 文章横幅布局组件
+ * 带封面图的极简文章布局，包含评论和前后篇导航
+ * 使用 i18n 翻译支持中英文切换
+ */
 import { ReactNode } from 'react'
 import Image from '@/components/Image'
 import Bleed from 'pliny/ui/Bleed'
@@ -9,6 +16,7 @@ import PageTitle from '@/components/PageTitle'
 import SectionContainer from '@/components/SectionContainer'
 import siteMetadata from '@/data/siteMetadata'
 import ScrollTopAndComment from '@/components/ScrollTopAndComment'
+import { useTranslation } from '@/components/locale-provider'
 
 interface LayoutProps {
   content: CoreContent<Blog>
@@ -21,6 +29,7 @@ export default function PostMinimal({ content, next, prev, children }: LayoutPro
   const { slug, title, images } = content
   const displayImage =
     images && images.length > 0 ? images[0] : 'https://picsum.photos/seed/picsum/800/400'
+  const { t } = useTranslation()
 
   return (
     <SectionContainer>
@@ -52,7 +61,7 @@ export default function PostMinimal({ content, next, prev, children }: LayoutPro
                   <Link
                     href={`/${prev.path}`}
                     className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
-                    aria-label={`Previous post: ${prev.title}`}
+                    aria-label={`${t('post.previousPost')}: ${prev.title}`}
                   >
                     &larr; {prev.title}
                   </Link>
@@ -63,7 +72,7 @@ export default function PostMinimal({ content, next, prev, children }: LayoutPro
                   <Link
                     href={`/${next.path}`}
                     className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
-                    aria-label={`Next post: ${next.title}`}
+                    aria-label={`${t('post.nextPost')}: ${next.title}`}
                   >
                     {next.title} &rarr;
                   </Link>

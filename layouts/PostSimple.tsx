@@ -1,3 +1,10 @@
+'use client'
+
+/**
+ * 文章简易布局组件
+ * 包含文章头部、内容、评论和前后篇导航
+ * 使用 i18n 翻译支持中英文切换
+ */
 import { ReactNode } from 'react'
 import { formatDate } from 'pliny/utils/formatDate'
 import { CoreContent } from 'pliny/utils/contentlayer'
@@ -8,6 +15,7 @@ import PageTitle from '@/components/PageTitle'
 import SectionContainer from '@/components/SectionContainer'
 import siteMetadata from '@/data/siteMetadata'
 import ScrollTopAndComment from '@/components/ScrollTopAndComment'
+import { useTranslation } from '@/components/locale-provider'
 
 interface LayoutProps {
   content: CoreContent<Blog>
@@ -18,6 +26,7 @@ interface LayoutProps {
 
 export default function PostLayout({ content, next, prev, children }: LayoutProps) {
   const { path, slug, date, title } = content
+  const { t } = useTranslation()
 
   return (
     <SectionContainer>
@@ -28,7 +37,7 @@ export default function PostLayout({ content, next, prev, children }: LayoutProp
             <div className="space-y-1 border-b border-gray-200 pb-10 text-center dark:border-gray-700">
               <dl>
                 <div>
-                  <dt className="sr-only">Published on</dt>
+                  <dt className="sr-only">{t('post.publishedOn')}</dt>
                   <dd className="text-base leading-6 font-medium text-gray-500 dark:text-gray-400">
                     <time dateTime={date}>{formatDate(date, siteMetadata.locale)}</time>
                   </dd>
@@ -55,7 +64,7 @@ export default function PostLayout({ content, next, prev, children }: LayoutProp
                     <Link
                       href={`/${prev.path}`}
                       className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
-                      aria-label={`Previous post: ${prev.title}`}
+                      aria-label={`${t('post.previousPost')}: ${prev.title}`}
                     >
                       &larr; {prev.title}
                     </Link>
@@ -66,7 +75,7 @@ export default function PostLayout({ content, next, prev, children }: LayoutProp
                     <Link
                       href={`/${next.path}`}
                       className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
-                      aria-label={`Next post: ${next.title}`}
+                      aria-label={`${t('post.nextPost')}: ${next.title}`}
                     >
                       {next.title} &rarr;
                     </Link>

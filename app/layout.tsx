@@ -5,6 +5,7 @@ import 'remark-github-blockquote-alert/alert.css' /* 引入GitHub风格引用块
 import { Space_Grotesk } from 'next/font/google' /* 引入Google字体Space Grotesk-谢根祥标注 */
 import { Analytics, AnalyticsConfig } from 'pliny/analytics' /* 引入网站分析组件-谢根祥标注 */
 import { SearchProvider, SearchConfig } from 'pliny/search' /* 引入搜索上下文Provider-谢根祥标注 */
+import { CustomKBarSearchProvider } from '@/components/KBarSearch' /* 引入自定义KBar搜索Provider-支持i18n */
 import Header from '@/components/Header' /* 引入页头导航组件-谢根祥标注 */
 import SectionContainer from '@/components/SectionContainer' /* 引入内容区域容器组件-谢根祥标注 */
 import Footer from '@/components/Footer' /* 引入页脚组件-谢根祥标注 */
@@ -115,13 +116,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <Analytics analyticsConfig={siteMetadata.analytics as AnalyticsConfig} />
             {/* 页面内容居中容器-谢根祥标注 */}
             <SectionContainer>
-              {/* 搜索功能上下文Provider-谢根祥标注 */}
-              <SearchProvider searchConfig={siteMetadata.search as SearchConfig}>
+              {/* 搜索功能上下文Provider-使用自定义KBar支持i18n */}
+              <CustomKBarSearchProvider>
                 {/* 页头导航栏-谢根祥标注 */}
                 <Header />
                 {/* 主内容区域，mb-auto实现弹性底部对齐-谢根祥标注 */}
                 <main className="mb-auto">{children}</main>
-              </SearchProvider>
+              </CustomKBarSearchProvider>
               {/* 页脚信息-谢根祥标注 */}
               <Footer />
             </SectionContainer>

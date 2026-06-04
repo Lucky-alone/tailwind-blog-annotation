@@ -72,6 +72,26 @@ const zh = {
     'lang.switchTo': '中文',
     'lang.english': 'English',
     'lang.chinese': '中文',
+
+    // Search / 搜索
+    'search.label': '搜索',
+
+    // Navigation extra / 导航附加
+    'nav.toggleMenu': '切换菜单',
+
+    // Post simple/banner aria / 文章简易布局无障碍
+    'post.previousPost': '上一篇文章',
+    'post.nextPost': '下一篇文章',
+
+    // Card / 卡片
+    'card.linkTo': '链接到',
+    'card.learnMore': '了解更多',
+
+    // KBar search / KBar 搜索
+    'search.placeholder': '输入命令或搜索...',
+    'search.content': '内容',
+    'search.loading': '加载中...',
+    'search.noResults': '未找到相关结果...',
 }
 
 export default zh

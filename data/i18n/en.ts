@@ -72,6 +72,26 @@ const en = {
     'lang.switchTo': 'English',
     'lang.english': 'English',
     'lang.chinese': '中文',
+
+    // Search / 搜索
+    'search.label': 'Search',
+
+    // Navigation extra / 导航附加
+    'nav.toggleMenu': 'Toggle Menu',
+
+    // Post simple/banner aria / 文章简易布局无障碍
+    'post.previousPost': 'Previous post',
+    'post.nextPost': 'Next post',
+
+    // Card / 卡片
+    'card.linkTo': 'Link to',
+    'card.learnMore': 'Learn more',
+
+    // KBar search / KBar 搜索
+    'search.placeholder': 'Type a command or search...',
+    'search.content': 'Content',
+    'search.loading': 'Loading...',
+    'search.noResults': 'No results for your search...',
 }
 
 export default en

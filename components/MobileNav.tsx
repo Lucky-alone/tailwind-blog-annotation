@@ -5,11 +5,22 @@ import { disableBodyScroll, enableBodyScroll, clearAllBodyScrollLocks } from 'bo
 import { Fragment, useState, useEffect, useRef } from 'react'
 import Link from './Link'
 import headerNavLinks from '@/data/headerNavLinks'
+import { useTranslation } from './locale-provider'
+
+/** 导航链接 href 到翻译 key 的映射 */
+const NAV_TRANSLATION: Record<string, string> = {
+  '/': 'nav.home',
+  '/blog': 'nav.blog',
+  '/tags': 'nav.tags',
+  '/projects': 'nav.projects',
+  '/about': 'nav.about',
+}
 
 const MobileNav = () => {
   const [navShow, setNavShow] = useState(false)
   const [mounted, setMounted] = useState(false)
   const navRef = useRef(null)
+  const { t } = useTranslation()
 
   useEffect(() => {
     setMounted(true)
@@ -33,7 +44,7 @@ const MobileNav = () => {
 
   return (
     <>
-      <button aria-label="Toggle Menu" onClick={onToggleNav} className="sm:hidden">
+      <button aria-label={t('nav.toggleMenu')} onClick={onToggleNav} className="sm:hidden">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 20 20"
@@ -80,19 +91,19 @@ const MobileNav = () => {
                 >
                   {headerNavLinks.map((link) => (
                     <Link
-                      key={link.title}
+                      key={link.href}
                       href={link.href}
                       className="hover:text-primary-500 dark:hover:text-primary-400 mb-4 py-2 pr-4 text-2xl font-bold tracking-widest text-gray-900 outline outline-0 dark:text-gray-100"
                       onClick={onToggleNav}
                     >
-                      {link.title}
+                      {NAV_TRANSLATION[link.href] ? t(NAV_TRANSLATION[link.href] as any) : link.title}
                     </Link>
                   ))}
                 </nav>
 
                 <button
                   className="hover:text-primary-500 dark:hover:text-primary-400 fixed top-7 right-4 z-80 h-16 w-16 p-4 text-gray-900 dark:text-gray-100"
-                  aria-label="Toggle Menu"
+                  aria-label={t('nav.toggleMenu')}
                   onClick={onToggleNav}
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
