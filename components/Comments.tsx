@@ -52,9 +52,8 @@ export default function Comments({ slug }: { slug: string }) {
       {/* 展开/折叠切换按钮 */}
       <button
         onClick={handleToggle}
-        className="inline-flex items-center gap-2 rounded-lg bg-primary-500 px-6 py-2.5 text-sm font-semibold text-white shadow-sm transition-all hover:bg-primary-600 hover:shadow-md dark:bg-primary-600 dark:hover:bg-primary-700"
+        className="inline-flex items-center gap-1.5 text-sm font-medium text-primary-500 transition-colors hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300"
       >
-        {/* 展开/折叠箭头图标 */}
         <svg
           className={`h-4 w-4 transition-transform duration-300 ${expanded ? 'rotate-180' : ''}`}
           viewBox="0 0 20 20"
@@ -74,7 +73,7 @@ export default function Comments({ slug }: { slug: string }) {
       {/* 评论区域（首次加载后不卸载，仅控制显示/隐藏） */}
       {loaded && (
         <div
-          className={`mt-6 overflow-hidden transition-all duration-500 ease-in-out ${expanded ? 'max-h-[9999px] opacity-100' : 'max-h-0 opacity-0'
+          className={`overflow-hidden transition-all duration-500 ease-in-out ${expanded ? 'mt-4 max-h-[9999px] opacity-100' : 'max-h-0 opacity-0'
             }`}
         >
           <CommentsComponent commentsConfig={commentsConfig} slug={slug} />

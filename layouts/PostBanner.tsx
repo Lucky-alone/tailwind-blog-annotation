@@ -52,7 +52,7 @@ export default function PostMinimal({ content, next, prev, children }: LayoutPro
           </div>
           <div className="prose dark:prose-invert max-w-none py-4">{children}</div>
           <div className="pt-6 pb-6 text-center text-sm text-gray-700 dark:text-gray-300">
-            <Link href={editUrl(filePath)}>{t('post.viewOnGitHub')}</Link>
+            <Link href={editUrl(filePath)} className="text-blue-600 hover:text-blue-800 hover:underline dark:text-blue-400 dark:hover:text-blue-300">{t('post.viewOnGitHub')}</Link>
           </div>
           {siteMetadata.comments && (
             <div className="pt-6 pb-6 text-center text-gray-700 dark:text-gray-300" id="comment">
