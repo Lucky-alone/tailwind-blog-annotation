@@ -194,6 +194,7 @@ Procfile          text
 # Executables
 *.exe             binary
 *.pyc             binary
+*.cjs             binary
 
 # RC files (like .babelrc or .eslintrc)
 *.*rc             text
