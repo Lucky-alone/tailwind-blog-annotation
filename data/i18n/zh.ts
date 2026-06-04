@@ -41,6 +41,11 @@ const zh = {
 
     // About page / 关于页
     'about.title': '关于',
+    'about.occupation': '高级软件工程师',
+    'about.company': '星辰科技有限公司',
+    'about.bio1': '小明是一名拥有10年经验的高级软件工程师，专注于全栈Web开发与大数据技术。',
+    'about.bio2': '他目前在星辰科技有限公司担任技术负责人，带领团队开发分布式数据处理平台和云原生应用。擅长React、Next.js、Node.js等前端与后端技术，同时对机器学习、数据挖掘等领域有深入研究。',
+    'about.bio3': '在工作之余，他热衷于技术写作与开源社区贡献，希望通过分享知识帮助更多开发者成长。',
 
     // Post layout / 文章布局
     'post.publishedOn': '发布于',

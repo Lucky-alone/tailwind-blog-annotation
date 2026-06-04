@@ -41,6 +41,11 @@ const en = {
 
     // About page / 关于页
     'about.title': 'About',
+    'about.occupation': 'Senior Software Engineer',
+    'about.company': 'Starlight Technology Co., Ltd.',
+    'about.bio1': 'Xiaoming is a senior software engineer with 10 years of experience, specializing in full-stack web development and big data technologies.',
+    'about.bio2': 'He currently serves as the technical lead at Starlight Technology, leading a team in developing distributed data processing platforms and cloud-native applications. He is proficient in frontend and backend technologies including React, Next.js, and Node.js, with deep expertise in machine learning and data mining.',
+    'about.bio3': 'In his spare time, he is passionate about technical writing and open-source community contributions, hoping to help more developers grow through knowledge sharing.',
 
     // Post layout / 文章布局
     'post.publishedOn': 'Published on',

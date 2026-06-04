@@ -6,7 +6,7 @@ const siteMetadata = {
   description: '一个专注于Web开发、大数据、软件工程与编程技术的技术博客',
   language: 'zh-cn',
   theme: 'system', // system, dark or light
-  siteUrl: 'https://tailwind-nextjs-starter-blog.vercel.app',
+  siteUrl: 'https://lucky-alone.github.io/tailwind-blog-annotation',
   siteRepo: 'https://github.com/Lucky-alone/tailwind-blog-annotation',
   siteLogo: `${process.env.BASE_PATH || ''}/static/images/logo.png`,
   socialBanner: `${process.env.BASE_PATH || ''}/static/images/twitter-card.png`,
