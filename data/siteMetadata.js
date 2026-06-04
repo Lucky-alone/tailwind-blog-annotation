@@ -68,6 +68,7 @@ const siteMetadata = {
       category: process.env.NEXT_PUBLIC_GISCUS_CATEGORY,
       categoryId: process.env.NEXT_PUBLIC_GISCUS_CATEGORY_ID,
       mapping: 'pathname', // 页面 ↔ Discussion 映射：按 pathname 匹配
+      strict: '0', // 严格标题匹配：0 = 禁用（避免模糊搜索误匹配）
       reactions: '1', // Emoji 表情反应：1 = 启用
       metadata: '0', // 发送元数据到父窗口：0 = 禁用
       inputPosition: 'bottom', // 评论输入框位置：底部

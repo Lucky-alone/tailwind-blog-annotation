@@ -19,8 +19,6 @@ import ScrollTopAndComment from '@/components/ScrollTopAndComment'
 import { useTranslation } from '@/components/locale-provider'
 
 const editUrl = (path) => `${siteMetadata.siteRepo}/blob/main/data/${path}`
-const discussUrl = (path) =>
-  `https://mobile.twitter.com/search?q=${encodeURIComponent(`${siteMetadata.siteUrl}/${path}`)}`
 
 interface LayoutProps {
   content: CoreContent<Blog>
@@ -54,10 +52,6 @@ export default function PostMinimal({ content, next, prev, children }: LayoutPro
           </div>
           <div className="prose dark:prose-invert max-w-none py-4">{children}</div>
           <div className="pt-6 pb-6 text-center text-sm text-gray-700 dark:text-gray-300">
-            <Link href={discussUrl(path)} rel="nofollow">
-              {t('post.discussOnTwitter')}
-            </Link>
-            {` \u2022 `}
             <Link href={editUrl(filePath)}>{t('post.viewOnGitHub')}</Link>
           </div>
           {siteMetadata.comments && (
